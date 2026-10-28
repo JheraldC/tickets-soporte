@@ -656,6 +656,113 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Estado: exitoso. El transcript permaneció ignorado.
 
 
+#### Registro 0.48 — Segundo commit local de documentación
+
+- Fecha y hora: 28/10/2026, 13:49:17 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comandos exactos:
+
+      & 'C:\Program Files\Git\cmd\git.exe' commit -m 'docs: record local setup and initial commit'
+      & 'C:\Program Files\Git\cmd\git.exe' log -2 --oneline --decorate
+      & 'C:\Program Files\Git\cmd\git.exe' status --short --branch
+
+- Objetivo: versionar el resultado del commit inicial en la bitácora.
+- Resultado: commit 1f5f35a; main quedó limpio y apunta a ese commit.
+- Estado: exitoso.
+
+#### Registro 0.49 — Creación del repositorio público y publicación inicial
+
+- Fecha y hora: 28/10/2026, 13:49:30 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comando exacto:
+
+      gh repo create tickets-soporte --public --description 'Laboratorio de desarrollo guiado por especificaciones con GitHub Spec Kit y Codex.' --source . --remote origin --push
+
+- Objetivo: crear el repositorio público bajo JheraldC, vincular origin y publicar main.
+- Resultado: GitHub creó https://github.com/JheraldC/tickets-soporte; se publicó HEAD como main y quedó configurado el seguimiento origin/main.
+- Estado: exitoso.
+
+#### Registro 0.50 — Verificación de publicación
+
+- Fecha y hora: 28/10/2026, 13:49:52–13:49:53 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comandos exactos:
+
+      gh repo view JheraldC/tickets-soporte --json name,visibility,url,defaultBranchRef,description
+      gh api repos/JheraldC/tickets-soporte --jq '{full_name, private, default_branch, description}'
+      & 'C:\Program Files\Git\cmd\git.exe' remote -v
+      & 'C:\Program Files\Git\cmd\git.exe' branch -vv
+      & 'C:\Program Files\Git\cmd\git.exe' status --short --branch
+      & 'C:\Program Files\Git\cmd\git.exe' rev-parse HEAD
+      & 'C:\Program Files\Git\cmd\git.exe' rev-parse origin/main
+
+- Objetivo: comprobar visibilidad, descripción, rama, remoto y sincronización del commit.
+- Resultado: visibilidad PUBLIC, private=false, rama por defecto main y descripción solicitada. origin apunta a la URL HTTPS del repositorio. HEAD y origin/main coincidieron en 1f5f35a; el árbol local quedó limpio.
+- Estado: exitoso.
+
+#### Registro 0.51 — Primer intento de búsqueda de cuentas
+
+- Fecha y hora: 28/10/2026, 13:50:27–13:50:28 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comando ejecutado para cada colaborador, con la consulta personal omitida de la bitácora pública:
+
+      gh api search/users -f q=<consulta redactada> -F per_page=20
+
+- Objetivo: usar el endpoint oficial de búsqueda de usuarios a partir de la parte local del correo.
+- Resultado: HTTP 404 para cada consulta por no indicar método GET explícitamente.
+- Estado: fallido.
+- Solución: indicar --method GET y probar el endpoint con una consulta pública conocida.
+
+#### Registro 0.52 — Validación del endpoint de búsqueda oficial
+
+- Fecha y hora: 28/10/2026, 13:50:46 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comando exacto:
+
+      gh api search/users --method GET -f q=octocat -F per_page=1 --jq '.items[].login'
+
+- Objetivo: verificar el método y ruta correctos antes de buscar colaboradores.
+- Resultado: el endpoint devolvió octocat.
+- Estado: exitoso.
+
+#### Registro 0.53 — Búsqueda por partes locales
+
+- Fecha y hora: 28/10/2026, 13:50:57–13:50:59 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comando usado para cada colaborador; el valor de búsqueda se omite en la copia pública:
+
+      gh api search/users --method GET -f q=<parte local redactada> -F per_page=20
+
+- Objetivo: buscar handles que coincidieran con las partes locales de los correos.
+- Resultado: cero resultados para cada una de las tres búsquedas; no hubo perfiles candidatos para comparar.
+- Estado: exitoso como consulta; identidad sin resolver.
+
+#### Registro 0.54 — Búsqueda por correos completos
+
+- Fecha y hora: 28/10/2026, 13:51:18–13:51:19 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comando usado para cada colaborador; se omite el correo en el registro público:
+
+      gh api search/users --method GET -f q=<email redactado> -F per_page=20
+
+- Objetivo: intentar una resolución oficial usando el email proporcionado.
+- Resultado: cero resultados en las tres búsquedas; no se mostraron ni guardaron los correos en el transcript.
+- Estado: exitoso como consulta; GitHub no resolvió los handles.
+
+#### Registro 0.55 — Estado de invitaciones y colaboradores
+
+- Fecha y hora: 28/10/2026, 13:51:47 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comandos exactos:
+
+      gh api repos/JheraldC/tickets-soporte/invitations --jq 'length'
+      gh api repos/JheraldC/tickets-soporte/collaborators --jq 'map({login, permissions})'
+
+- Objetivo: comprobar si existen invitaciones o colaboradores añadidos.
+- Resultado: cero invitaciones pendientes; el único colaborador listado es JheraldC, propietario con permisos de administrador.
+- Estado: exitoso. No se enviaron invitaciones porque faltan los handles.
+
+
 ### Pasos posteriores — detenidos por instrucción
 
 #### Paso 1: Specify — Requisitos
@@ -696,5 +803,5 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Proyecto local inicializado con Spec Kit 1.2.4, integración Codex y scripts PowerShell.
 - Integration status reporta OK y specify check detecta Codex CLI disponible.
 - No se ejecutaron las habilidades del laboratorio y no se generaron requisitos, diseño, tareas ni código.
-- Pendientes del Paso 0: crear/publicar el repo público, resolver los handles de colaboradores, enviar invitaciones y verificar GitHub.
+- Pendientes del Paso 0: recibir los tres handles de GitHub, enviar las invitaciones de escritura y verificar su estado. No hay invitaciones pendientes en este momento.
 - Las horas exactas de la primera intervención no se conservaron; sus comandos y resultados conocidos se registran sin estimar la hora.
