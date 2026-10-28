@@ -6,13 +6,13 @@ param(
     [string]$PublicCommand,
     [string]$Solution = '',
     [switch]$RedactOutput,
+    # Compatibility with previous calls: all technical records are now local.
     [switch]$TranscriptOnly,
     [int[]]$SuccessExitCodes = @(0)
 )
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $logDir = Join-Path $repoRoot '.lab-logs'
-$bitacoraPath = Join-Path $repoRoot 'docs\bitacora-laboratorio.md'
 $null = New-Item -ItemType Directory -Path $logDir -Force
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $started = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'SA Pacific Standard Time')
@@ -53,26 +53,12 @@ $ok = ($null -eq $caught) -and ($commandErrors.Count -eq 0) -and ($SuccessExitCo
 $status = if ($ok) { 'exitoso' } else { 'fallido' }
 $outputText = ($captured | Out-String -Width 220).TrimEnd()
 if (-not $outputText) { $outputText = '(Sin salida.)' }
-$publicOutput = if ($RedactOutput) { '(Salida omitida del documento publico; respaldo local disponible.)' } else { ConvertTo-PublicText $outputText }
-if ($publicOutput.Length -gt 14000) { $publicOutput = $publicOutput.Substring(0, 14000) + "`n[Salida publica abreviada; respaldo completo local.]" }
-$commandBlock = ((ConvertTo-PublicText $PublicCommand) -split '\r?\n' | ForEach-Object { if ([string]::IsNullOrWhiteSpace($_)) { '' } else { '    ' + $_.TrimEnd() } }) -join "`n"
-$outputBlock = ($publicOutput -split '\r?\n' | ForEach-Object { if ([string]::IsNullOrWhiteSpace($_)) { '' } else { '    ' + $_.TrimEnd() } }) -join "`n"
-$entry = "`n#### Registro $Step - $Objective`n`n- Fecha y hora: $($started.ToString('yyyy-MM-dd HH:mm:ss zzz')) (Lima).`n- Directorio: $cwd.`n- Objetivo: $Objective`n- Comando exacto (datos personales o secretos omitidos si corresponde):`n`n$commandBlock`n`n- Resultado y salida relevante:`n`n$outputBlock`n`n- Estado: $status (codigo nativo: $nativeCode).`n"
-if ($Solution) { $entry += "- Error o solucion: $(ConvertTo-PublicText $Solution)`n" }
-if (-not $ok -and -not $Solution) { $entry += "- Error o solucion: revisar la salida anterior; la correccion se documentara en el siguiente registro.`n" }
-$entry += "`n"
-
-$privateRecord = "Fecha: $($started.ToString('o'))`r`nDirectorio: $cwd`r`nComando:`r`n$Command`r`nEstado: $status`r`nCodigo: $nativeCode`r`nSalida:`r`n$(ConvertTo-PublicText $outputText)`r`n"
+$displayOutput = if ($RedactOutput) { '(Salida omitida de pantalla; respaldo local disponible.)' } else { ConvertTo-PublicText $outputText }
+if ($displayOutput.Length -gt 14000) { $displayOutput = $displayOutput.Substring(0, 14000) + "`n[Salida de pantalla abreviada; respaldo completo local.]" }
+$privateRecord = "Fecha: $($started.ToString('o'))`r`nDirectorio: $cwd`r`nObjetivo: $(ConvertTo-PublicText $Objective)`r`nComando:`r`n$Command`r`nEstado: $status`r`nCodigo: $nativeCode`r`nError o solucion: $(ConvertTo-PublicText $Solution)`r`nSalida:`r`n$(ConvertTo-PublicText $outputText)`r`n"
 [IO.File]::WriteAllText($recordPath, $privateRecord, $utf8)
-if (-not $TranscriptOnly) {
-    $document = [IO.File]::ReadAllText($bitacoraPath, [Text.Encoding]::UTF8)
-    $markerIndex = $document.IndexOf('### Pasos posteriores')
-    if ($markerIndex -lt 0) { throw 'No se encontro el lugar de insercion en la bitacora.' }
-    $document = $document.Insert($markerIndex, $entry)
-    [IO.File]::WriteAllText($bitacoraPath, $document, $utf8)
-}
 Write-Output (ConvertTo-PublicText $PublicCommand)
-Write-Output $publicOutput
-Write-Output "Registro ${Step}: $status; $recordPath"
+Write-Output $displayOutput
+Write-Output "Registro local ${Step}: $status; $recordPath"
 if ($transcriptStarted) { Stop-Transcript | Out-Null }
-if (-not $ok) { throw "El comando del registro $Step fallo. La bitacora conserva el resultado." }
+if (-not $ok) { throw "El comando del registro $Step fallo. El respaldo local conserva el resultado." }
