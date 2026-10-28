@@ -4,6 +4,11 @@
 !.env.example
 secrets/
 credentials.json
+auth.json
+.codex/
+.aws/
+.ssh/
+.npmrc
 *.pem
 *.key
 *.p12

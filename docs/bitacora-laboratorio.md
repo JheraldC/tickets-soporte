@@ -763,6 +763,604 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Estado: exitoso. No se enviaron invitaciones porque faltan los handles.
 
 
+#### Registro 0.56 — Commit y publicación de la bitácora de GitHub
+
+- Fecha y hora: 28/10/2026, 13:52:44 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comandos exactos:
+
+      & 'C:\Program Files\Git\cmd\git.exe' commit -m 'docs: record GitHub setup and invite lookup'
+      & 'C:\Program Files\Git\cmd\git.exe' push origin main
+
+- Objetivo: publicar el registro de creación y búsqueda oficial de colaboradores.
+- Resultado: commit fc4c0ac publicado en origin/main.
+- Estado: exitoso.
+
+#### Registro 0.57 — Verificación final local y remota
+
+- Fecha y hora: 28/10/2026, 13:53:16 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comandos exactos:
+
+      gh repo view JheraldC/tickets-soporte --json name,visibility,url,defaultBranchRef,description
+      gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+      gh api repos/JheraldC/tickets-soporte/invitations --jq 'length'
+      gh api repos/JheraldC/tickets-soporte/collaborators --jq 'map({login, permissions})'
+      & 'C:\Program Files\Git\cmd\git.exe' rev-parse HEAD
+      & 'C:\Program Files\Git\cmd\git.exe' rev-parse origin/main
+      & 'C:\Program Files\Git\cmd\git.exe' status --short --branch
+      & 'C:\Program Files\Git\cmd\git.exe' check-ignore -v '.lab-logs\tickets-soporte-laboratorio-transcript.txt'
+      & 'C:\Program Files\Git\cmd\git.exe' diff --check
+      & 'C:\Program Files\Git\cmd\git.exe' diff --cached --check
+      & 'C:\Program Files\Git\cmd\git.exe' grep -n -I -E 'gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----' HEAD
+
+- Objetivo: verificar visibilidad, rama, metadatos, sincronización, invitaciones, exclusión del log y ausencia de patrones comunes de credenciales.
+- Resultado: repo PUBLIC; default branch main; HEAD local, origin/main y main remoto coinciden en fc4c0ac3d0878d6e1e8a88e0cf440f083835c1af; árbol limpio; transcript ignorado por .gitignore; git diff checks sin errores; escaneo sin coincidencias; cero invitaciones pendientes y solo JheraldC figura como colaborador.
+- Estado: exitoso.
+- Limitación: los tres handles siguen sin identificar y no se envió ninguna invitación.
+
+
+#### Registro 0.58 — Primer intento de invitación mediante navegador
+
+- Fecha y hora: 28/10/2026, posterior a 13:53:16; hora exacta no conservada.
+- Directorio: sesión de herramientas de Codex en el proyecto local.
+- Acciones internas: lectura de la habilidad `computer-use` y sus documentos `guidance.md`, `api.md` y `confirmations.md`; selección de la ventana Brave devuelta por `sky.list_apps()`, id 132126. Los parámetros de la selección se recuperaron del contexto de la sesión; no se inventa un comando PowerShell para estas acciones.
+- Llamada de lectura de estado:
+
+      await sky.get_window_state({window: targetWindow, include_screenshot:true, include_text:true})
+
+- Objetivo: acceder a Settings → Collaborators → Add people para intentar los correos proporcionados por el usuario.
+- Resultado: `Computer Use has been stopped for this turn because it could not determine the current browser URL on Windows with enough confidence to enforce policy. Stop your work and send a final message noting why Computer Use ended.`
+- Estado: fallido. Se detuvo la interacción, sin escribir correos ni enviar invitaciones. No fue un rechazo de GitHub a esos correos; el formulario no pudo inspeccionarse.
+- Solución: reintentar únicamente tras la nueva instrucción del usuario; no eludir la comprobación de URL.
+
+#### Registro 0.59 — Recuperación del estado y respaldo del primer reintento
+
+- Fecha y hora: 28/10/2026, antes de 13:58:13; hora exacta no capturada.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Comando PowerShell ejecutado:
+
+      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'; $transcript=Join-Path $project '.lab-logs\tickets-soporte-laboratorio-transcript.txt'; Start-Transcript -Path $transcript -Append | Out-Null; Write-Output "PS> Get-Location; Get-Item '$project'; git status --short --branch; Get-Content docs/bitacora-laboratorio.md -Tail 35"; Write-Output "PWD=$((Get-Location).Path)"; Write-Output "PROJECT_EXISTS=$(Test-Path $project)"; Write-Output "TRANSCRIPT_EXISTS=$(Test-Path $transcript)"; if (Test-Path $project) { Get-Item $project | Select-Object FullName,CreationTime,LastWriteTime; & 'C:\Program Files\Git\cmd\git.exe' -C $project status --short --branch; Get-Content (Join-Path $project 'docs\bitacora-laboratorio.md') -Tail 35 }; Write-Output 'MEMORY_HITS:'; Select-String -Path 'C:\Users\LENOVO\.codex\memories\MEMORY.md' -Pattern 'tickets-soporte|Spec Kit|MSYS2|Git Windows|PowerShell' -Context 1,2 | Select-Object -First 12 | ForEach-Object { $_.ToString() }; Stop-Transcript | Out-Null
+
+- Objetivo: recuperar el estado existente, respaldar la inspección y consultar el antecedente del fallo de Git MSYS2.
+- Resultado: proyecto y transcript existentes; rama `main` vinculada a `origin/main`; `docs/bitacora-laboratorio.md` ya tenía una modificación preparada. Se encontró el antecedente para usar Git para Windows. La salida de la búsqueda fue abreviada por la herramienta.
+- Estado: exitoso, salida parcial. El texto `PS>` impreso fue una descripción resumida; el bloque anterior conserva la invocación real completa.
+
+#### Registro 0.60 — Nuevos intentos de lectura del navegador
+
+- Fecha y hora: 28/10/2026, antes de 13:58:13; horas exactas no capturadas.
+- Directorio: sesión JavaScript persistente de Codex.
+- Objetivo: recuperar la ventana de GitHub y repetir la lectura de estado autorizada por el usuario.
+- Acciones y resultados, en orden:
+
+      ALL_TOOLS.filter(x => /node_repl|computer use|memory/i.test(x.name+" "+x.description)).slice(0,12)
+      const s = await sky.get_window_state({window: targetWindow, include_screenshot:true, include_text:true}); nodeRepl.write(JSON.stringify(s).slice(0,14000));
+      const stateNow = await sky.getState(); nodeRepl.write(JSON.stringify(stateNow).slice(0,9000));
+      nodeRepl.write('sky methods: '+Object.keys(sky).join(', '));
+      const appsNow = await sky.list_apps(); nodeRepl.write(JSON.stringify(appsNow).slice(0,7000));
+      const braveWindow = await sky.get_window(132126); nodeRepl.write(JSON.stringify(braveWindow).slice(0,5000));
+      const braveWindow = await sky.get_window({id:132126}); nodeRepl.write(JSON.stringify(braveWindow).slice(0,5000));
+      const braveState = await sky.get_window_state({window:braveWindow,include_screenshot:true,include_text:true}); nodeRepl.write(JSON.stringify(braveState).slice(0,7000));
+
+- Resultados: descubrimiento de herramientas exitoso; la primera lectura de estado volvió a detener Computer Use por no determinar la URL. En la siguiente intervención, `sky.getState` falló (`sky.getState is not a function`); la inspección de métodos y `list_apps` funcionaron y mostraron la ventana de Brave con el título del repositorio. `get_window(132126)` falló (`get_window input must be an object`); se corrigió a `{id:132126}` y devolvió la ventana. La última captura volvió a detener Computer Use por la URL.
+- Estado: mixto; lectura final fallida. No se introdujeron correos ni se pulsó un botón de invitación.
+- Solución: usar únicamente firmas documentadas y respetar la detención de la herramienta. El usuario autorizó otro intento posterior. La captura del primer reintento tampoco permitió continuar.
+
+#### Registro 0.61 — Inspección local antes del nuevo cierre
+
+- Fecha y hora: 2026-10-28 13:58:13 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Comando exacto:
+
+      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'
+      $log=Join-Path $project '.lab-logs\cierre-paso0-transcript.txt'
+      Start-Transcript -Path $log -Append | Out-Null
+      Write-Output ('Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz'))
+      Write-Output 'Comando: inspeccionar instrucciones, estado de Git y bitácora antes del cierre'
+      Get-ChildItem -LiteralPath $project -Force | Select-Object Name,Mode
+      Get-ChildItem -LiteralPath 'C:\Users\LENOVO\Documents\VScode\OperadorVirtual114' -Filter AGENTS.md -Force | ForEach-Object { Get-Content -LiteralPath $_.FullName }
+      & 'C:\Program Files\Git\cmd\git.exe' -C $project status --short --branch
+      & 'C:\Program Files\Git\cmd\git.exe' -C $project log -3 --oneline
+      Get-Content -LiteralPath (Join-Path $project 'docs\bitacora-laboratorio.md') -Encoding UTF8 -First 30
+      Get-Content -LiteralPath (Join-Path $project 'docs\bitacora-laboratorio.md') -Encoding UTF8 -Tail 110
+      Get-Content -LiteralPath 'C:\Users\LENOVO\.codex\plugins\cache\openai-bundled\computer-use\26.1021.31345\skills\computer-use\SKILL.md' -Encoding UTF8
+      Stop-Transcript | Out-Null
+
+- Objetivo: conservar lo ya preparado y revisar las instrucciones para el nuevo intento.
+- Resultado: `main...origin/main`, modificación de la bitácora preparada, último commit `fc4c0ac`; las carpetas de Spec Kit y registros locales existen. No se encontró AGENTS.md en el directorio padre inmediato consultado.
+- Estado: exitoso.
+
+#### Registro 0.62 — Documentación del control de Windows e inventario de herramientas
+
+- Fecha y hora: 28/10/2026, entre 13:58:13 y 13:59:33 -05:00; hora exacta en el transcript local.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Acción interna: filtrar `ALL_TOOLS` por `repl` y herramientas de GitHub; no apareció `mcp__node_repl__js` en el inventario de este reintento. El conector GitHub ofrece consulta de permisos, pero no envío de invitaciones a colaboradores. El control `cua_repl` sí figura en las herramientas de la sesión.
+- Comando exacto:
+
+      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'
+      Start-Transcript -Path (Join-Path $project '.lab-logs\cierre-paso0-transcript.txt') -Append | Out-Null
+      Write-Output ('Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz'))
+      $skillDocs='C:\Users\LENOVO\.codex\plugins\cache\openai-bundled\computer-use\26.1021.31345\docs'
+      Get-Content -LiteralPath (Join-Path $skillDocs 'guidance.md') -Encoding UTF8
+      Get-Content -LiteralPath (Join-Path $skillDocs 'api.md') -Encoding UTF8
+      Get-Content -LiteralPath (Join-Path $skillDocs 'confirmations.md') -Encoding UTF8
+      Get-ChildItem -LiteralPath (Join-Path $project '.lab-logs') -Force | Select-Object Name,Length
+      Get-Content -LiteralPath (Join-Path $project '.gitignore') -Encoding UTF8
+      & 'C:\Program Files\Git\cmd\git.exe' -C $project diff --cached --stat
+      Stop-Transcript | Out-Null
+
+- Resultado: archivos de la habilidad leídos, exclusión `.lab-logs/` confirmada, 37 líneas preparadas en la bitácora. La salida extensa fue abreviada por la herramienta; los transcript locales conservan el respaldo.
+- Estado: exitoso; salida de consulta abreviada.
+
+#### Registro 0.63 — Revalidación de GitHub y localización de herramientas
+
+- Fecha y hora: 2026-10-28 13:59:33 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comando exacto, ejecutado con el acceso de red y credenciales ya autorizado:
+
+      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'
+      Start-Transcript -Path (Join-Path $project '.lab-logs\cierre-paso0-transcript.txt') -Append | Out-Null
+      Write-Output ('Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz'))
+      $env:PATH='C:\Program Files\Git\cmd;'+$env:PATH
+      Set-Location -LiteralPath $project
+      gh repo view JheraldC/tickets-soporte --json name,visibility,url,defaultBranchRef,description
+      gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+      gh api repos/JheraldC/tickets-soporte/invitations --jq 'map({id,login:.invitee.login,permissions,created_at})'
+      gh api repos/JheraldC/tickets-soporte/collaborators --jq 'map({login,permissions})'
+      & 'C:\Program Files\Git\cmd\git.exe' remote -v
+      & 'C:\Program Files\Git\cmd\git.exe' rev-parse HEAD
+      Get-ChildItem -LiteralPath 'C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools' -Recurse -File -Include specify.exe,uv.exe,python.exe | Select-Object -ExpandProperty FullName
+      Stop-Transcript | Out-Null
+
+- Resultado: repo `PUBLIC`, rama principal `main`, descripción solicitada, origin correcto; remoto y HEAD local en `fc4c0ac3d0878d6e1e8a88e0cf440f083835c1af`. Invitaciones `[]`, único colaborador `JheraldC`. Se localizaron `specify.exe` y Python administrado bajo `.lab-tools`; la consulta terminó con código 0.
+- Estado: exitoso.
+
+#### Registro 0.64 — Instrucciones persistentes y registro automático
+
+- Fecha y hora: 28/10/2026, posterior a 13:59:33; hora exacta no capturada en la acción interna.
+- Directorio: proyecto local tickets-soporte.
+- Acción interna: `apply_patch` creó `AGENTS.md` y `scripts/Invoke-LabCommand.ps1`; una segunda edición corrigió la interpolación de `${Step}` antes de ejecutar el archivo. Otra edición incorporó los registros 0.58–0.64 y actualizó las conclusiones.
+- Objetivo: registrar inmediatamente cada comando, su directorio, hora de Lima, objetivo, salida, estado y errores; preservar respaldos ignorados por Git; mantener estas reglas en etapas futuras.
+- Resultado: archivos creados y bitácora actualizada. El script de registro se validará con las verificaciones reales siguientes. Es una utilidad del laboratorio; no se generó código de la aplicación de tickets.
+- Estado: exitoso como edición de archivos; ejecución pendiente de la siguiente entrada.
+- Límite del cierre: el resultado del último commit y push de esta propia bitácora se conserva en el transcript local y se incorpora al Markdown en la siguiente intervención, evitando commits recursivos de auto-documentación.
+
+
+#### Registro 0.65 - Validar el registrador e inventariar ejecutables disponibles
+
+- Fecha y hora: 2026-10-28 14:03:13 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Validar el registrador e inventariar ejecutables disponibles
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $parseTokens=$null
+    $parseErrors=$null
+    [void][System.Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'scripts\Invoke-LabCommand.ps1'),[ref]$parseTokens,[ref]$parseErrors)
+    if ($parseErrors.Count -gt 0) { throw ($parseErrors | Out-String) }
+    'Parser PowerShell: sin errores.'
+    foreach ($name in @('git.exe','gh.exe','uv.exe','specify.exe','codex.cmd','node.exe','npm.cmd')) { $found=Get-Command $name -ErrorAction SilentlyContinue; if ($found) { $found | Select-Object Name,Source } else { "$name no esta en el PATH actual." } }
+    Get-ChildItem -LiteralPath 'C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools' -Force | Select-Object Name,Mode
+    Get-ChildItem -LiteralPath 'C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin' -File | Select-Object Name
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+    Parser PowerShell: sin errores.
+
+    Name           Source
+    ----           ------
+    git.exe        c:\devkitPro\msys2\usr\bin\git.exe
+    gh.exe         C:\Program Files\GitHub CLI\gh.exe
+    uv.exe no esta en el PATH actual.
+    specify.exe no esta en el PATH actual.
+    codex.cmd no esta en el PATH actual.
+    node.exe       C:\Program Files\nodejs\node.exe
+    npm.cmd        C:\Program Files\nodejs\npm.cmd
+    bin
+    cache
+    python
+    tools
+    python.exe
+    python3.11.exe
+    python3.exe
+    specify.exe
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.66 - Localizar uv y Codex sin reinstalar herramientas existentes
+
+- Fecha y hora: 2026-10-28 14:03:34 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Localizar uv y Codex sin reinstalar herramientas existentes
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    rg -n -- 'uv.exe|codex.exe|codex.cmd|UV_INSTALL|--version' docs/bitacora-laboratorio.md
+    Get-ChildItem -LiteralPath 'C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4' -File -Filter 'uv*.exe' | Select-Object -ExpandProperty FullName
+    Get-AppxPackage -Name 'OpenAI.Codex' | Select-Object Name,InstallLocation
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+    Get-AppxPackage:
+    Line |
+       3 |  Get-AppxPackage -Name 'OpenAI.Codex' | Select-Object Name,InstallLoca …
+         |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         | Acceso denegado.
+
+- Estado: fallido (codigo nativo: 0).
+- Error o solucion: revisar la salida anterior; la correccion se documentara en el siguiente registro.
+
+
+#### Registro 0.67 - Resolver rutas de uv y Codex con lectura autorizada
+
+- Fecha y hora: 2026-10-28 14:04:02 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Resolver rutas de uv y Codex con lectura autorizada
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    Select-String -LiteralPath 'docs\bitacora-laboratorio.md' -Pattern 'uv.exe|codex.exe|--version|UV_INSTALL' | Select-Object -First 18 | ForEach-Object { $_.Line }
+    foreach ($path in @('C:\Users\LENOVO\.local\bin\uv.exe','C:\Users\LENOVO\.cargo\bin\uv.exe','C:\Users\LENOVO\AppData\Roaming\uv\bin\uv.exe')) { if (Test-Path -LiteralPath $path) { Get-Item -LiteralPath $path | Select-Object FullName } }
+    Get-Command codex -All -ErrorAction SilentlyContinue | Select-Object Name,Source
+    Get-AppxPackage -Name 'OpenAI.Codex' | Select-Object Name,InstallLocation
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+          python --version; node --version; npm --version; gh --version; codex --version
+          & 'C:\Program Files\Git\cmd\git.exe' --version
+          if (Test-Path -LiteralPath '.\.venv\Scripts\python.exe') { & '.\.venv\Scripts\python.exe' --version } else { 'No Python executable in parent project .venv' }
+    - Comando exacto: winget --version
+          & 'C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\.venv\Scripts\python.exe' --version
+          Test-Path -LiteralPath '.\.venv\Scripts\uv.exe'
+    - Resultado: Python seguía apuntando al runtime de WindowsApps inaccesible; uv.exe no estaba en la venv.
+    - Resultado: uv 0.13.6 instalado en C:\Users\LENOVO\.local\bin, con uv.exe, uvx.exe y uvw.exe.
+          python --version; specify version; uv tool list
+          codex exec --help | Select-String -Pattern 'sandbox|git-repo|approval' -Context 0,1
+          codex exec --sandbox read-only --skip-git-repo-check $prompt
+          codex exec --sandbox read-only --skip-git-repo-check $prompt
+          Get-ChildItem -LiteralPath 'C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools' -Recurse -File -Include specify.exe,uv.exe,python.exe | Select-Object -ExpandProperty FullName
+        foreach ($name in @('git.exe','gh.exe','uv.exe','specify.exe','codex.cmd','node.exe','npm.cmd')) { $found=Get-Command $name -ErrorAction SilentlyContinue; if ($found) { $found | Select-Object Name,Source } else { "$name no esta en el PATH actual." } }
+        uv.exe no esta en el PATH actual.
+        rg -n -- 'uv.exe|codex.exe|codex.cmd|UV_INSTALL|--version' docs/bitacora-laboratorio.md
+
+    FullName
+    --------
+    C:\Users\LENOVO\.local\bin\uv.exe
+
+- Estado: exitoso (codigo nativo: 0).
+- Error o solucion: Get-AppxPackage fue denegado en 0.66; se reintenta solo su lectura con permisos adicionales. Se usa Select-String para recuperar las rutas cuando rg no produjo salida.
+
+
+#### Registro 0.68 - Identificar el CLI de Codex ya instalado y comprobar uv
+
+- Fecha y hora: 2026-10-28 14:04:46 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Identificar el CLI de Codex ya instalado y comprobar uv
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    Get-Process -Name '*codex*','ChatGPT' -ErrorAction SilentlyContinue | Select-Object ProcessName,Path
+    Get-AppxPackage | Where-Object { $_.Name -match 'OpenAI|ChatGPT|Codex' } | Select-Object Name,InstallLocation
+    Get-ChildItem -LiteralPath 'C:\Users\LENOVO\AppData\Local\Microsoft\WindowsApps' -Filter '*codex*' -ErrorAction SilentlyContinue | Select-Object FullName
+    Select-String -LiteralPath 'docs\bitacora-laboratorio.md' -Pattern 'UV_TOOL_DIR|UV_PYTHON_INSTALL_DIR|PATH=' | Select-Object -First 12 | ForEach-Object { $_.Line }
+    & 'C:\Users\LENOVO\.local\bin\uv.exe' --version
+
+- Resultado y salida relevante:
+
+
+    ProcessName              Path
+    -----------              ----
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    ChatGPT                  C:\Program Files\WindowsApps\OpenAI.Codex_26.1021.3705.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe
+    codex                    C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    codex                    C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    codex                    C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    codex                    C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    codex                    C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    codex                    C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    codex-code-mode-host     C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex-code-mode-host.exe
+    codex-computer-use       C:\Users\LENOVO\AppData\Local\OpenAI\Codex\runtimes\cua_node\1fb7137c46617d50\bin\node_modules\@oai\sky\bin\windows\codex-computer-use.exe
+    codex-computer-use-swift C:\Users\LENOVO\AppData\Local\OpenAI\Codex\runtimes\cua_node\1fb7137c46617d50\bin\node_modules\@oai\sky\bin\windows\swift\x64\codex-computer-use-swift.exe
+
+
+
+
+          site:docs.astral.sh/uv python install install directory UV_PYTHON_INSTALL_DIR Windows
+          site:docs.astral.sh/uv/reference/environment/ UV_PYTHON_INSTALL_DIR
+    - Resultado: se confirmó uv python install 3.11 y las opciones de directorios UV_PYTHON_INSTALL_DIR, UV_PYTHON_BIN_DIR, UV_TOOL_DIR y UV_TOOL_BIN_DIR.
+          $path='docs\bitacora-laboratorio.md'; $doc=[System.IO.File]::ReadAllText((Join-Path (Get-Location) $path)); $lines=$doc -split '\r?\n'; $clean=($lines | ForEach-Object { $_.TrimEnd() }) -join [Environment]::NewLine; $clean=$clean.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine; [System.IO.File]::WriteAllText((Join-Path (Get-Location) $path),$clean,[System.Text.UTF8Encoding]::new($false)); & 'C:\Program Files\Git\cmd\git.exe' add -- docs\bitacora-laboratorio.md; & 'C:\Program Files\Git\cmd\git.exe' diff --cached --check
+          $env:Path='C:\Program Files\Git\cmd;'+$env:Path; gh auth login --hostname github.com --git-protocol https --web
+          $env:Path='C:\Program Files\Git\cmd;'+$env:Path; gh auth login --hostname github.com --git-protocol https --web
+          $path='docs\bitacora-laboratorio.md'; $doc=[System.IO.File]::ReadAllText((Join-Path (Get-Location) $path)); $lines=$doc -split '\r?\n'; $clean=($lines | ForEach-Object { $_.TrimEnd() }) -join [Environment]::NewLine; $clean=$clean.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine; [System.IO.File]::WriteAllText((Join-Path (Get-Location) $path),$clean,[System.Text.UTF8Encoding]::new($false)); & 'C:\Program Files\Git\cmd\git.exe' add -- docs\bitacora-laboratorio.md; & 'C:\Program Files\Git\cmd\git.exe' diff --cached --check
+          $env:PATH='C:\Program Files\Git\cmd;'+$env:PATH
+    uv 0.13.6 (329bf9448 2026-10-26 x86_64-pc-windows-msvc)
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.69 - Guardar rutas locales y verificar el inicio reproducible creado por apply_patch
+
+- Fecha y hora: 2026-10-28 14:05:36 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Guardar rutas locales y verificar el inicio reproducible creado por apply_patch
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $toolRoot='C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools'
+    $config=[ordered]@{ GitBin='C:\Program Files\Git\cmd'; UvBin='C:\Users\LENOVO\.local\bin'; LabBin=(Join-Path $toolRoot 'bin'); CodexBin='C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009'; ToolRoot=$toolRoot }
+    $configPath=Join-Path (Get-Location) '.lab-logs\tool-paths.json'
+    if (Test-Path -LiteralPath $configPath) { throw 'La configuracion ya existe; no se sobrescribe.' }
+    [IO.File]::WriteAllText($configPath,($config | ConvertTo-Json),(New-Object Text.UTF8Encoding($false)))
+    Get-Item -LiteralPath 'AGENTS.md','scripts\Invoke-LabCommand.ps1','scripts\Enter-Lab.ps1','.lab-logs\tool-paths.json' | Select-Object Name,Length
+    'La herramienta apply_patch creo Enter-Lab.ps1 y actualizo AGENTS.md antes de esta verificacion. Configuracion local creada sin sobrescribir archivos.'
+
+- Resultado y salida relevante:
+
+
+    Name                  Length
+    ----                  ------
+    AGENTS.md               2683
+    Invoke-LabCommand.ps1   4396
+    Enter-Lab.ps1           1182
+    tool-paths.json          434
+    La herramienta apply_patch creo Enter-Lab.ps1 y actualizo AGENTS.md antes de esta verificacion. Configuracion local creada sin sobrescribir archivos.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.70 - Verificar todas las herramientas y la integracion Codex desde una sesion nueva
+
+- Fecha y hora: 2026-10-28 14:05:44 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Verificar todas las herramientas y la integracion Codex desde una sesion nueva
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    & .\scripts\Enter-Lab.ps1
+    git --version
+    gh --version
+    python --version
+    uv --version
+    specify version
+    codex --version
+    node --version
+    npm.cmd --version
+    specify integration status
+    specify check
+
+- Resultado y salida relevante:
+
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name        Source
+    ----        ------
+    git.exe     C:\Program Files\Git\cmd\git.exe
+    gh.exe      C:\Program Files\GitHub CLI\gh.exe
+    python.exe  C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe      C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe   C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe    C:\Program Files\nodejs\node.exe
+    npm.cmd     C:\Program Files\nodejs\npm.cmd
+    git version 2.54.0.windows.1
+    gh version 2.103.0 (2026-10-21)
+    https://github.com/cli/cli/releases/tag/v2.103.0
+    Python 3.11.18
+    uv 0.13.6 (329bf9448 2026-10-26 x86_64-pc-windows-msvc)
+                 ███████╗██████╗ ███████╗ ██████╗██╗███████╗██╗   ██╗
+                 ██╔════╝██╔══██╗██╔════╝██╔════╝██║██╔════╝╚██╗ ██╔╝
+                 ███████╗██████╔╝█████╗  ██║     ██║█████╗   ╚████╔╝
+                 ╚════██║██╔═══╝ ██╔══╝  ██║     ██║██╔══╝    ╚██╔╝
+                 ███████║██║     ███████╗╚██████╗██║██║        ██║
+                 ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝
+
+                   GitHub Spec Kit - Spec-Driven Development Toolkit
+
+    ┌────────────────────────── Specify CLI Information ──────────────────────────┐
+    │                                                                             │
+    │     CLI Version    1.2.4                                                    │
+    │                                                                             │
+    │          Python    3.11.18                                                  │
+    │        Platform    Windows                                                  │
+    │    Architecture    AMD64                                                    │
+    │      OS Version    10.0.26300                                               │
+    │         OpenSSL    OpenSSL 3.5.9 29 Sep 2026                                │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+
+    WARNING: failed to clean up stale arg0 temp dirs: Acceso denegado. (os error 5)
+    WARNING: proceeding, even though we could not create PATH aliases: Acceso denegado. (os error 5) at path "C:\\Users\\LENOVO\\.codex\\tmp\\arg0-windows\\codex-arg0H08zNL"
+    codex-cli 0.164.0-alpha.11.1
+    v24.16.0
+    11.13.0
+    Integration status: OK
+    Default integration: codex
+    Installed integrations: codex
+    Multi-install safe: yes
+    Shared templates target alignment: codex
+    Modified managed files: 0
+    Missing managed files: 0
+    Invalid manifest paths: 0
+    Unchecked manifests: 0
+                 ███████╗██████╗ ███████╗ ██████╗██╗███████╗██╗   ██╗
+                 ██╔════╝██╔══██╗██╔════╝██╔════╝██║██╔════╝╚██╗ ██╔╝
+                 ███████╗██████╔╝█████╗  ██║     ██║█████╗   ╚████╔╝
+                 ╚════██║██╔═══╝ ██╔══╝  ██║     ██║██╔══╝    ╚██╔╝
+                 ███████║██║     ███████╗╚██████╗██║██║        ██║
+                 ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝
+
+                   GitHub Spec Kit - Spec-Driven Development Toolkit
+
+    Checking for installed tools...
+
+    Check Available Tools
+    ├── ● Antigravity (not found)
+    ├── ● Alquimia AI (not found)
+    ├── ● Amp (not found)
+    ├── ● Auggie CLI (not found)
+    ├── ○ IBM Bob (no CLI required)
+    ├── ● Claude Code (not found)
+    ├── ○ Cline (no CLI required)
+    ├── ● CodeBuddy (not found)
+    ├── ● Codex CLI (available)
+    ├── ● Command Code (not found)
+    ├── ○ GitHub Copilot (no CLI required)
+    ├── ○ Cursor (no CLI required)
+    ├── ● Devin for Terminal (not found)
+    ├── ● Docker Agent (not found)
+    ├── ● Factory Droid (not found)
+    ├── ● DeepSeek Harness (not found)
+    ├── ○ Firebender (no CLI required)
+    ├── ● Forge (not found)
+    ├── ● Gemini CLI (not found)
+    ├── ● Goose (not found)
+    ├── ● Grok Build (not found)
+    ├── ● Hermes Agent (not found)
+    ├── ● Junie (not found)
+    ├── ○ Kilo Code (no CLI required)
+    ├── ● Kimi Code (not found)
+    ├── ● Kiro CLI (available)
+    ├── ○ Lingma (no CLI required)
+    ├── ● MiniMax Code (not found)
+    ├── ● Muse Code (not found)
+    ├── ○ None (shared scaffolding only) (no CLI required)
+    ├── ● Oh My Pi (not found)
+    ├── ● opencode (not found)
+    ├── ● Pi Coding Agent (not found)
+    ├── ● Qoder CLI (not found)
+    ├── ● Qwen Code (not found)
+    ├── ● RovoDev ACLI (not found)
+    ├── ● SHAI (not found)
+    ├── ● Tabnine CLI (not found)
+    ├── ○ Trae (no CLI required)
+    ├── ● Mistral Vibe (not found)
+    ├── ● ZCode (not found)
+    ├── ○ Zed (no CLI required)
+    ├── ● Visual Studio Code (available)
+    └── ● Visual Studio Code Insiders (not found)
+
+    Specify CLI is ready to use!
+    Tip: Run 'specify self check' to verify you have the latest CLI version
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.71 - Preservar respaldos locales y verificar exclusiones e inventario Spec Kit
+
+- Fecha y hora: 2026-10-28 14:07:00 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Preservar respaldos locales y verificar exclusiones e inventario Spec Kit
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $original='C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\tickets-soporte-laboratorio-transcript.txt'
+    $copy=Join-Path (Get-Location) '.lab-logs\transcript-original-sanitizado.txt'
+    if ((Test-Path -LiteralPath $original) -and -not (Test-Path -LiteralPath $copy)) {
+        $raw=[IO.File]::ReadAllText($original,[Text.Encoding]::UTF8)
+        $safe=[regex]::Replace($raw,'(?im)^.*(?:Token:|Authorization:\s*Bearer|one-time code|device code|First copy your).*$','[linea de autenticacion omitida]')
+        $safe=[regex]::Replace($safe,'(?i)\b(?:gh[pousr]_[A-Za-z0-9_]{10,}|github_pat_[A-Za-z0-9_]{10,})\b','[credencial omitida]')
+        [IO.File]::WriteAllText($copy,$safe,(New-Object Text.UTF8Encoding($false)))
+        'Respaldo sanitizado del transcript inicial guardado localmente.'
+    }
+    & 'C:\Program Files\Git\cmd\git.exe' check-ignore -v '.lab-logs\transcript-original-sanitizado.txt' '.lab-logs\tool-paths.json' '.codex\auth.json' '.env'
+    $skills=@(Get-ChildItem -LiteralPath '.agents\skills' -Directory -Filter 'speckit-*')
+    $skills | Select-Object Name
+    'Habilidades Spec Kit: '+$skills.Count
+    if ($skills.Count -ne 10) { throw 'El numero de habilidades cambio respecto al inventario inicial.' }
+    'Requisitos de aplicacion generados: '+(Test-Path -LiteralPath 'specs')
+    'Codigo de aplicacion generado: '+(Test-Path -LiteralPath 'src')
+    'apply_patch amplio .gitignore con exclusiones de estado local y credenciales.'
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+    Respaldo sanitizado del transcript inicial guardado localmente.
+    .gitignore:25:.lab-logs/	".lab-logs\\transcript-original-sanitizado.txt"
+    .gitignore:25:.lab-logs/	".lab-logs\\tool-paths.json"
+    .gitignore:8:.codex/	".codex\\auth.json"
+    .gitignore:2:.env	.env
+
+    Name
+    ----
+    speckit-analyze
+    speckit-checklist
+    speckit-clarify
+    speckit-constitution
+    speckit-converge
+    speckit-implement
+    speckit-plan
+    speckit-specify
+    speckit-tasks
+    speckit-taskstoissues
+    Habilidades Spec Kit: 10
+    Requisitos de aplicacion generados: False
+    Codigo de aplicacion generado: False
+    apply_patch amplio .gitignore con exclusiones de estado local y credenciales.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.72 - Revisar y preparar la documentacion, los registros automaticos y las exclusiones antes de publicar
+
+- Fecha y hora: 2026-10-28 14:08:17 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Revisar y preparar la documentacion, los registros automaticos y las exclusiones antes de publicar
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $path=Join-Path (Get-Location) 'docs\bitacora-laboratorio.md'
+    $doc=[IO.File]::ReadAllText($path,[Text.Encoding]::UTF8)
+    $clean=(($doc -split '\r?\n' | ForEach-Object { $_.TrimEnd() }) -join "`n").TrimEnd()+"`n"
+    [IO.File]::WriteAllText($path,$clean,(New-Object Text.UTF8Encoding($false)))
+    foreach ($script in Get-ChildItem -LiteralPath 'scripts' -Filter '*.ps1') { $parseTokens=$null; $parseErrors=$null; [void][System.Management.Automation.Language.Parser]::ParseFile($script.FullName,[ref]$parseTokens,[ref]$parseErrors); if ($parseErrors.Count) { throw ($parseErrors | Out-String) } }
+    'apply_patch ajusto la redaccion de lineas de credenciales para conservar expresiones regulares no sensibles y evito espacios finales. Ambos scripts PowerShell tienen sintaxis valida.'
+    $git='C:\Program Files\Git\cmd\git.exe'
+    & $git add -- .gitignore AGENTS.md scripts\Invoke-LabCommand.ps1 scripts\Enter-Lab.ps1 docs\bitacora-laboratorio.md
+    if ($LASTEXITCODE) { throw 'git add fallo.' }
+    & $git diff --cached --check
+    if ($LASTEXITCODE) { throw 'Hay errores de espacios en el diff.' }
+    & $git diff --cached --stat
+    $files=@(& $git ls-files)
+    if ($files | Where-Object { $_ -match '(^|/)(\.lab-logs|\.env(?:\..*)?|\.codex|\.aws|\.ssh)(/|$)|(^|/)(auth|credentials)\.json$|\.(pem|key|p12|pfx)$' }) { throw 'Hay un archivo sensible o privado preparado.' }
+    $pattern='gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'
+    $matches=@(& $git grep --cached -n -I -E $pattern)
+    if ($LASTEXITCODE -eq 0) { throw 'Se detecto un patron de credencial; no se publica.' } elseif ($LASTEXITCODE -ne 1) { throw 'Fallo el escaneo de credenciales.' }
+    foreach ($revision in @(& $git rev-list --all)) { $matches=@(& $git grep -n -I -E $pattern $revision); if ($LASTEXITCODE -eq 0) { throw 'Se detecto un patron de credencial en el historial.' } elseif ($LASTEXITCODE -ne 1) { throw 'Fallo el escaneo del historial.' } }
+    if (Select-String -LiteralPath 'docs\bitacora-laboratorio.md' -SimpleMatch '@unsa.edu.pe' -Quiet) { throw 'La bitacora contiene un correo institucional.' }
+    'Archivos privados excluidos; sin patrones comunes de credenciales en el indice ni el historial; sin correos institucionales en la bitacora.'
+    & $git status --short --branch
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+    apply_patch ajusto la redaccion de lineas de credenciales para conservar expresiones regulares no sensibles y evito espacios finales. Ambos scripts PowerShell tienen sintaxis valida.
+    warning: in the working copy of 'docs/bitacora-laboratorio.md', LF will be replaced by CRLF the next time Git touches it
+    warning: in the working copy of 'AGENTS.md', LF will be replaced by CRLF the next time Git touches it
+    warning: in the working copy of 'scripts/Enter-Lab.ps1', LF will be replaced by CRLF the next time Git touches it
+    warning: in the working copy of 'scripts/Invoke-LabCommand.ps1', LF will be replaced by CRLF the next time Git touches it
+     .gitignore                    |   5 +
+     AGENTS.md                     |  25 ++
+     docs/bitacora-laboratorio.md  | 552 +++++++++++++++++++++++++++++++++++++++++-
+     scripts/Enter-Lab.ps1         |  23 ++
+     scripts/Invoke-LabCommand.ps1 |  75 ++++++
+     5 files changed, 679 insertions(+), 1 deletion(-)
+    Archivos privados excluidos; sin patrones comunes de credenciales en el indice ni el historial; sin correos institucionales en la bitacora.
+    ## main...origin/main
+    M  .gitignore
+    A  AGENTS.md
+    M  docs/bitacora-laboratorio.md
+    A  scripts/Enter-Lab.ps1
+    A  scripts/Invoke-LabCommand.ps1
+
+- Estado: exitoso (codigo nativo: 0).
+
 ### Pasos posteriores — detenidos por instrucción
 
 #### Paso 1: Specify — Requisitos
@@ -797,11 +1395,17 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 3. uv y specify-cli faltaban; se instalaron uv 0.13.6 y specify-cli 1.2.4.
 4. La primera inspección del proyecto duplicó la ruta y no encontró specify por PATH temporal; se corrigió usando el directorio actual y la ruta absoluta de specify.exe.
 5. La cuenta gh JheraldC tenía un token inválido. El acceso web oficial ya fue autorizado; las consultas GitHub se ejecutan en el contexto que puede leer el almacén de credenciales. Ningún token ni código temporal se anota.
+6. El control del navegador no pudo determinar la URL activa con suficiente confianza y detuvo dos intentos. No se eludió la comprobación ni se confundió este bloqueo con un rechazo de los correos por GitHub.
+7. Un intento usó métodos o argumentos incorrectos del control de ventanas (`getState`, `get_window(132126)`); se consultaron los métodos disponibles y se corrigió a `get_window({id:132126})`. La captura posterior siguió bloqueada por la URL.
 
 ## Conclusiones del laboratorio
 
 - Proyecto local inicializado con Spec Kit 1.2.4, integración Codex y scripts PowerShell.
 - Integration status reporta OK y specify check detecta Codex CLI disponible.
 - No se ejecutaron las habilidades del laboratorio y no se generaron requisitos, diseño, tareas ni código.
-- Pendientes del Paso 0: recibir los tres handles de GitHub, enviar las invitaciones de escritura y verificar su estado. No hay invitaciones pendientes en este momento.
+- Repo público creado y conectado mediante `origin`; `main` publicada y verificada en GitHub.
+- Los tres compañeros siguen sin invitación enviada. La búsqueda oficial no resolvió sus correos y el formulario del navegador no pudo inspeccionarse por un bloqueo de la herramienta. Los tres casos quedan pendientes; no se inventaron usuarios. El usuario autorizó continuar el resto de la configuración aunque las invitaciones quedaran pendientes.
+- GitHub confirmó cero invitaciones pendientes de aceptación en la consulta del registro 0.63. Esto no significa que los tres compañeros estén invitados.
+- AGENTS.md mantiene las reglas de documentación para las próximas etapas; el registro automático de PowerShell usa scripts/Invoke-LabCommand.ps1 y respaldos en .lab-logs/.
+- En una nueva sesión de PowerShell, scripts/Enter-Lab.ps1 carga las herramientas existentes sin reinstalarlas ni modificar el PATH global. El registro 0.70 verificó Git, gh, Python 3.11.18, uv, Specify 1.2.4, Codex CLI, Node.js y npm desde este inicio.
 - Las horas exactas de la primera intervención no se conservaron; sus comandos y resultados conocidos se registran sin estimar la hora.
