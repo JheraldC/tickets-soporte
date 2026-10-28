@@ -3,6 +3,7 @@
 **Proyecto local:** C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte
 **Inicio:** 28/10/2026, zona horaria America/Lima
 **Alcance:** Paso 0. Los pasos 1–5 no se han iniciado por instrucción del usuario.
+**Estado verificado:** herramientas disponibles mediante scripts/Enter-Lab.ps1, Spec Kit integrado con Codex, repositorio público con main publicada y tres invitaciones de escritura enviadas. Las tres aceptaciones siguen pendientes (registro 0.79).
 
 ## Criterio de registro
 
@@ -1414,6 +1415,260 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 
 - Estado: exitoso (codigo nativo: 0).
 
+
+#### Registro 0.75 - Incorporar el cierre publicado y registrar el acceso real al formulario de colaboradores
+
+- Fecha y hora: 2026-10-28 14:10:43 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Incorporar el cierre publicado y registrar el acceso real al formulario de colaboradores
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    'Importacion del cierre anterior conservado en transcript:'
+    Get-Content -LiteralPath '.lab-logs\20261028-140931-995-0.74.txt' -Encoding UTF8
+    'Acciones internas reales del navegador en esta intervencion (mcp__cua_repl):'
+    'await cua.getState(); -> inventario local de Windows y navegador Brave por extension disponible.'
+    'let ghTab = await cua.createBrowserTab("3", "https://github.com/JheraldC/tickets-soporte/settings/access"); -> pagina Manage access autenticada de JheraldC/tickets-soporte; 0 colaboradores y ninguna invitacion.'
+    'await ghTab.click(92); await ghTab.getAXState(); -> modal Add people to tickets-soporte; campo Find people; acepta username, full name, or email; boton Add to repository deshabilitado hasta resolver un destinatario.'
+    'No se enviaron invitaciones en estas acciones; el formulario ya es accesible y se continuara con los tres correos autorizados.'
+
+- Resultado y salida relevante:
+
+    Importacion del cierre anterior conservado en transcript:
+    Fecha: 2026-10-28T14:09:31.9950713-05:00
+    Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte
+    Comando:
+    & .\scripts\Enter-Lab.ps1
+    git add -- docs\bitacora-laboratorio.md
+    git diff --cached --check
+    if ($LASTEXITCODE) { throw 'El diff tiene errores.' }
+    git commit -m 'docs: record verified publication of setup audit'
+    if ($LASTEXITCODE) { throw 'El commit de cierre fallo.' }
+    git push origin main
+    if ($LASTEXITCODE) { throw 'El push de cierre fallo.' }
+    $local=git rev-parse HEAD
+    $tracking=git rev-parse origin/main
+    $remote=gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+    if ($LASTEXITCODE -or $local -ne $tracking -or $local -ne $remote) { throw 'Los commits no coinciden.' }
+    $dirty=@(git status --porcelain)
+    if ($dirty.Count) { throw 'Quedan cambios sin publicar.' }
+    'HEAD, origin/main y GitHub coinciden: '+$local
+    'Arbol de trabajo limpio.'
+    gh repo view JheraldC/tickets-soporte --json visibility,url,defaultBranchRef
+    gh api repos/JheraldC/tickets-soporte/invitations --jq 'map({id,login:.invitee.login,permissions,created_at})'
+    gh api repos/JheraldC/tickets-soporte/collaborators --jq 'map({login,permissions})'
+    Estado: exitoso
+    Codigo: 0
+    Salida:
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name        Source
+    ----        ------
+    git.exe     C:\Program Files\Git\cmd\git.exe
+    gh.exe      C:\Program Files\GitHub CLI\gh.exe
+    python.exe  C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe      C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe   C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe    C:\Program Files\nodejs\node.exe
+    npm.cmd     C:\Program Files\nodejs\npm.cmd
+    warning: in the working copy of 'docs/bitacora-laboratorio.md', LF will be replaced by CRLF the next time Git touches it
+    [main e424b5f] docs: record verified publication of setup audit
+     1 file changed, 53 insertions(+)
+    To https://github.com/JheraldC/tickets-soporte.git
+       c42384e..e424b5f  main -> main
+    HEAD, origin/main y GitHub coinciden: e424b5f2a0fb1e65f03dbc4801cf164b2a1cb6ac
+    Arbol de trabajo limpio.
+    {"defaultBranchRef":{"name":"main"},"url":"https://github.com/JheraldC/tickets-soporte","visibility":"PUBLIC"}
+    []
+    [{"login":"JheraldC","permissions":{"admin":true,"maintain":true,"pull":true,"push":true,"triage":true}}]
+    Acciones internas reales del navegador en esta intervencion (mcp__cua_repl):
+    await cua.getState(); -> inventario local de Windows y navegador Brave por extension disponible.
+    let ghTab = await cua.createBrowserTab("3", "https://github.com/JheraldC/tickets-soporte/settings/access"); -> pagina Manage access autenticada de JheraldC/tickets-soporte; 0 colaboradores y ninguna invitacion.
+    await ghTab.click(92); await ghTab.getAXState(); -> modal Add people to tickets-soporte; campo Find people; acepta username, full name, or email; boton Add to repository deshabilitado hasta resolver un destinatario.
+    No se enviaron invitaciones en estas acciones; el formulario ya es accesible y se continuara con los tres correos autorizados.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.76 - Registrar la primera invitacion enviada por correo desde GitHub
+
+- Fecha y hora: 2026-10-28 14:11:55 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Registrar la primera invitacion enviada por correo desde GitHub
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    'Acciones internas ejecutadas inmediatamente antes de este registro; hora exacta de cada llamada no emitida por el navegador. Directorio: sesion mcp__cua_repl sobre GitHub.'
+    'await ghTab.typeText(9, "[correo del companero 1 omitido]"); await ghTab.getAXState(); -> busqueda en curso.'
+    'await ghTab.getAXState(); -> resultado del correo: Invite to tickets-soporte.'
+    'await ghTab.click(15); await ghTab.getAXState(); -> seleccion del destinatario y boton Add <correo>.'
+    'await ghTab.click(10); await ghTab.getAXState(); -> GitHub confirma que el destinatario fue agregado; muestra 1 invitation, Pending Invite y Awaiting AngelCaceresPari01 response.'
+    'Resultado verificable: companero 1 identificado oficialmente por GitHub como AngelCaceresPari01; invitacion creada, id visible 340233509; aceptacion pendiente. No se copio el enlace privado de invitacion.'
+
+- Resultado y salida relevante:
+
+    Acciones internas ejecutadas inmediatamente antes de este registro; hora exacta de cada llamada no emitida por el navegador. Directorio: sesion mcp__cua_repl sobre GitHub.
+    await ghTab.typeText(9, "[correo del companero 1 omitido]"); await ghTab.getAXState(); -> busqueda en curso.
+    await ghTab.getAXState(); -> resultado del correo: Invite to tickets-soporte.
+    await ghTab.click(15); await ghTab.getAXState(); -> seleccion del destinatario y boton Add <correo>.
+    await ghTab.click(10); await ghTab.getAXState(); -> GitHub confirma que el destinatario fue agregado; muestra 1 invitation, Pending Invite y Awaiting AngelCaceresPari01 response.
+    Resultado verificable: companero 1 identificado oficialmente por GitHub como AngelCaceresPari01; invitacion creada, id visible 340233509; aceptacion pendiente. No se copio el enlace privado de invitacion.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.77 - Registrar la segunda invitacion enviada y su estado visible
+
+- Fecha y hora: 2026-10-28 14:12:34 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Registrar la segunda invitacion enviada y su estado visible
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    'Acciones internas mcp__cua_repl en GitHub, 28/10/2026, Lima:'
+    '14:12:06.298 - await ghTab.click(97); await ghTab.getAXState(); -> modal Add people.'
+    '14:12:09.794 - await ghTab.typeText(10, "[correo del companero 2 omitido]"); await ghTab.getAXState(); -> busqueda.'
+    '14:12:13.466 - await ghTab.getAXState(); -> correo ofrecido con Invite to tickets-soporte.'
+    '14:12:17.460 - await ghTab.click(16); await ghTab.getAXState(); -> destinatario seleccionado.'
+    '14:12:24.864 - await ghTab.click(11); await ghTab.getAXState(); -> confirmacion de GitHub y 2 invitations.'
+    'Resultado: companero 2 identificado oficialmente como YimyAlfredo; invitacion id 340233659 creada; Pending Invite y Awaiting YimyAlfredo response. Aceptacion pendiente.'
+    'Cada llamada emitio antes su hora UTC mediante nodeRepl.write(new Date().toISOString()); se convirtio a Lima restando 5 horas.'
+
+- Resultado y salida relevante:
+
+    Acciones internas mcp__cua_repl en GitHub, 28/10/2026, Lima:
+    14:12:06.298 - await ghTab.click(97); await ghTab.getAXState(); -> modal Add people.
+    14:12:09.794 - await ghTab.typeText(10, "[correo del companero 2 omitido]"); await ghTab.getAXState(); -> busqueda.
+    14:12:13.466 - await ghTab.getAXState(); -> correo ofrecido con Invite to tickets-soporte.
+    14:12:17.460 - await ghTab.click(16); await ghTab.getAXState(); -> destinatario seleccionado.
+    14:12:24.864 - await ghTab.click(11); await ghTab.getAXState(); -> confirmacion de GitHub y 2 invitations.
+    Resultado: companero 2 identificado oficialmente como YimyAlfredo; invitacion id 340233659 creada; Pending Invite y Awaiting YimyAlfredo response. Aceptacion pendiente.
+    Cada llamada emitio antes su hora UTC mediante nodeRepl.write(new Date().toISOString()); se convirtio a Lima restando 5 horas.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.78 - Registrar la tercera invitacion y preservar evidencia visual local
+
+- Fecha y hora: 2026-10-28 14:13:53 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Registrar la tercera invitacion y preservar evidencia visual local
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    'Acciones internas mcp__cua_repl en GitHub, 28/10/2026, Lima:'
+    '14:12:40.681 - await ghTab.click(97); await ghTab.getAXState(); -> modal Add people.'
+    '14:12:44.064 - await ghTab.typeText(10, "[correo del companero 3 omitido]"); await ghTab.getAXState(); -> busqueda.'
+    '14:12:46.312 - await ghTab.getAXState(); -> correo ofrecido con Invite to tickets-soporte.'
+    '14:12:48.821 - await ghTab.click(16); await ghTab.getAXState(); -> destinatario seleccionado.'
+    '14:12:56.423 - await ghTab.click(11); await ghTab.getAXState(); -> GitHub confirma 3 invitations; companero 3 corresponde a Braulio20182313, invitacion id 340233745, Pending Invite.'
+    '14:13:18.791 - await ghTab.click(42); await ghTab.getAXState(); -> se cierra el aviso temporal que contenia el correo; quedan visibles las tres invitaciones.'
+    'Accion posterior, hora exacta no emitida: invitationProof = await ghTab.screenshot({fullPage:true}); writeFile de node:fs/promises guardo los bytes en .lab-logs/invitaciones-github-20261028.png; nodeRepl.emitImage mostro la evidencia; await ghTab.markDeliverable() conservo la pagina visible como resultado.'
+    Get-Item -LiteralPath '.lab-logs\invitaciones-github-20261028.png' | Select-Object Name,Length,LastWriteTime
+    & 'C:\Program Files\Git\cmd\git.exe' check-ignore -v '.lab-logs\invitaciones-github-20261028.png'
+    'Resultado: tres invitaciones enviadas por correo; todas pendientes de aceptacion. Evidencia solo local, excluida de Git. Los permisos se consultan mediante API en el siguiente registro.'
+
+- Resultado y salida relevante:
+
+    Acciones internas mcp__cua_repl en GitHub, 28/10/2026, Lima:
+    14:12:40.681 - await ghTab.click(97); await ghTab.getAXState(); -> modal Add people.
+    14:12:44.064 - await ghTab.typeText(10, "[correo del companero 3 omitido]"); await ghTab.getAXState(); -> busqueda.
+    14:12:46.312 - await ghTab.getAXState(); -> correo ofrecido con Invite to tickets-soporte.
+    14:12:48.821 - await ghTab.click(16); await ghTab.getAXState(); -> destinatario seleccionado.
+    14:12:56.423 - await ghTab.click(11); await ghTab.getAXState(); -> GitHub confirma 3 invitations; companero 3 corresponde a Braulio20182313, invitacion id 340233745, Pending Invite.
+    14:13:18.791 - await ghTab.click(42); await ghTab.getAXState(); -> se cierra el aviso temporal que contenia el correo; quedan visibles las tres invitaciones.
+    Accion posterior, hora exacta no emitida: invitationProof = await ghTab.screenshot({fullPage:true}); writeFile de node:fs/promises guardo los bytes en .lab-logs/invitaciones-github-20261028.png; nodeRepl.emitImage mostro la evidencia; await ghTab.markDeliverable() conservo la pagina visible como resultado.
+
+    Name                             Length LastWriteTime
+    ----                             ------ -------------
+    invitaciones-github-20261028.png 101847 28/10/2026 14:13:24
+    .gitignore:25:.lab-logs/	".lab-logs\\invitaciones-github-20261028.png"
+    Resultado: tres invitaciones enviadas por correo; todas pendientes de aceptacion. Evidencia solo local, excluida de Git. Los permisos se consultan mediante API en el siguiente registro.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.79 - Verificar por API las tres invitaciones y sus permisos de escritura
+
+- Fecha y hora: 2026-10-28 14:14:06 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Verificar por API las tres invitaciones y sus permisos de escritura
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    & .\scripts\Enter-Lab.ps1
+    $json=gh api repos/JheraldC/tickets-soporte/invitations --jq 'map({id,login:.invitee.login,permissions,created_at})'
+    if ($LASTEXITCODE) { throw 'La API de invitaciones fallo.' }
+    $invitations=@($json | ConvertFrom-Json)
+    $invitations | Sort-Object login | Format-Table id,login,permissions,created_at -AutoSize
+    if ($invitations.Count -ne 3) { throw 'GitHub no devuelve exactamente tres invitaciones pendientes.' }
+    foreach ($expected in @('AngelCaceresPari01','YimyAlfredo','Braulio20182313')) { $invite=@($invitations | Where-Object login -eq $expected); if ($invite.Count -ne 1 -or $invite[0].permissions -notin @('write','push')) { throw ('Invitacion o permiso incorrecto para '+$expected) } }
+    $proof=Join-Path (Get-Location) '.lab-logs\invitaciones-verificadas-20261028.json'
+    if (Test-Path -LiteralPath $proof) { throw 'El respaldo ya existe; no se sobrescribe.' }
+    [IO.File]::WriteAllText($proof,$json,(New-Object Text.UTF8Encoding($false)))
+    'Tres invitaciones verificadas por API oficial, todas con permiso de escritura y pendientes de aceptacion.'
+
+- Resultado y salida relevante:
+
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name        Source
+    ----        ------
+    git.exe     C:\Program Files\Git\cmd\git.exe
+    gh.exe      C:\Program Files\GitHub CLI\gh.exe
+    python.exe  C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe      C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe   C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe    C:\Program Files\nodejs\node.exe
+    npm.cmd     C:\Program Files\nodejs\npm.cmd
+
+
+           id login              permissions created_at
+           -- -----              ----------- ----------
+    340233509 AngelCaceresPari01 write       28/10/2026 19:11:34
+    340233745 Braulio20182313    write       28/10/2026 19:12:59
+    340233659 YimyAlfredo        write       28/10/2026 19:12:27
+
+    Tres invitaciones verificadas por API oficial, todas con permiso de escritura y pendientes de aceptacion.
+
+- Estado: exitoso (codigo nativo: 0).
+
+
+#### Registro 0.80 - Publicar los resultados de las invitaciones y el cierre verificado del Paso 0
+
+- Fecha y hora: 2026-10-28 14:15:26 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Publicar los resultados de las invitaciones y el cierre verificado del Paso 0
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    & .\scripts\Enter-Lab.ps1
+    'apply_patch actualizo el estado inicial, los problemas resueltos y las conclusiones con las tres invitaciones verificadas.'
+    git add -- docs\bitacora-laboratorio.md
+    git diff --cached --check
+    if ($LASTEXITCODE) { throw 'Hay errores de formato en la documentacion preparada.' }
+    $private=@(git ls-files | Where-Object { $_ -match '(^|/)(\.lab-logs|\.env(?:\..*)?|\.codex|\.aws|\.ssh)(/|$)|(^|/)(auth|credentials)\.json$|\.(pem|key|p12|pfx)$' })
+    if ($private.Count) { throw 'Hay archivos sensibles o registros privados versionados.' }
+    $findings=@(git grep --cached -n -I -E 'gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----')
+    if ($LASTEXITCODE -eq 0) { throw 'Se detecto un patron de credencial.' } elseif ($LASTEXITCODE -ne 1) { throw 'Fallo el escaneo.' }
+    if (Select-String -LiteralPath 'docs\bitacora-laboratorio.md' -SimpleMatch '@unsa.edu.pe' -Quiet) { throw 'Se detecto un correo institucional en la bitacora publica.' }
+    'Escaneo sin coincidencias de credenciales comunes; ningun registro privado ni archivo sensible incluido.'
+    git commit -m 'docs: verify collaborator invitations and complete step zero'
+    if ($LASTEXITCODE) { throw 'No se creo el commit.' }
+    git push origin main
+    if ($LASTEXITCODE) { throw 'No se publico el commit.' }
+    $local=git rev-parse HEAD
+    $remote=gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+    if ($LASTEXITCODE -or $local -ne $remote) { throw 'No coincide la publicacion remota.' }
+    'Publicacion de resultados verificada: '+$local
+
+- Resultado y salida relevante:
+
+    Exception:
+    Line |
+      10 |  … ' -Quiet) { throw 'Se detecto un correo institucional en la bitacora  …
+         |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         | Se detecto un correo institucional en la bitacora publica.
+
+- Estado: fallido (codigo nativo: 1).
+- Error o solucion: revisar la salida anterior; la correccion se documentara en el siguiente registro.
+
 ### Pasos posteriores — detenidos por instrucción
 
 #### Paso 1: Specify — Requisitos
@@ -1448,7 +1703,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 3. uv y specify-cli faltaban; se instalaron uv 0.13.6 y specify-cli 1.2.4.
 4. La primera inspección del proyecto duplicó la ruta y no encontró specify por PATH temporal; se corrigió usando el directorio actual y la ruta absoluta de specify.exe.
 5. La cuenta gh JheraldC tenía un token inválido. El acceso web oficial ya fue autorizado; las consultas GitHub se ejecutan en el contexto que puede leer el almacén de credenciales. Ningún token ni código temporal se anota.
-6. El control del navegador no pudo determinar la URL activa con suficiente confianza y detuvo dos intentos. No se eludió la comprobación ni se confundió este bloqueo con un rechazo de los correos por GitHub.
+6. El control anterior del navegador no pudo determinar la URL activa con suficiente confianza y detuvo dos intentos. En la nueva intervención, cua_repl detectó la extensión de Brave, mostró la URL verificada y permitió operar el formulario autenticado. Las tres invitaciones se enviaron correctamente. No se eludió la comprobación ni se confundió el bloqueo anterior con un rechazo de los correos por GitHub.
 7. Un intento usó métodos o argumentos incorrectos del control de ventanas (`getState`, `get_window(132126)`); se consultaron los métodos disponibles y se corrigió a `get_window({id:132126})`. La captura posterior siguió bloqueada por la URL.
 
 ## Conclusiones del laboratorio
@@ -1457,8 +1712,17 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Integration status reporta OK y specify check detecta Codex CLI disponible.
 - No se ejecutaron las habilidades del laboratorio y no se generaron requisitos, diseño, tareas ni código.
 - Repo público creado y conectado mediante `origin`; `main` publicada y verificada en GitHub.
-- Los tres compañeros siguen sin invitación enviada. La búsqueda oficial no resolvió sus correos y el formulario del navegador no pudo inspeccionarse por un bloqueo de la herramienta. Los tres casos quedan pendientes; no se inventaron usuarios. El usuario autorizó continuar el resto de la configuración aunque las invitaciones quedaran pendientes.
-- GitHub confirmó cero invitaciones pendientes de aceptación en la consulta del registro 0.63. Esto no significa que los tres compañeros estén invitados.
+- La búsqueda REST inicial no resolvió los correos; el formulario oficial de GitHub sí permitió invitarlos directamente y devolvió sus cuentas. No se inventaron usuarios. La API confirmó tres invitaciones con permiso `write` en el registro 0.79; todas están pendientes de aceptación.
+- Correspondencia en el orden de los correos suministrados por el usuario:
+
+  | Compañero | Cuenta confirmada por GitHub | ID de invitación | Permiso | Estado verificado |
+  | --- | --- | --- | --- | --- |
+  | 1 | AngelCaceresPari01 | 340233509 | write | Enviada; aceptación pendiente |
+  | 2 | YimyAlfredo | 340233659 | write | Enviada; aceptación pendiente |
+  | 3 | Braulio20182313 | 340233745 | write | Enviada; aceptación pendiente |
+
+- Los valores `created_at` de la salida del registro 0.79 corresponden a UTC; las horas de ejecución de las entradas se registran en Lima. El respaldo JSON conserva el sufijo de zona horaria de la API.
+- La captura de las tres invitaciones se conserva únicamente en `.lab-logs/invitaciones-github-20261028.png`, excluida de Git. No se copiaron enlaces privados de invitación.
 - AGENTS.md mantiene las reglas de documentación para las próximas etapas; el registro automático de PowerShell usa scripts/Invoke-LabCommand.ps1 y respaldos en .lab-logs/.
 - En una nueva sesión de PowerShell, scripts/Enter-Lab.ps1 carga las herramientas existentes sin reinstalarlas ni modificar el PATH global. El registro 0.70 verificó Git, gh, Python 3.11.18, uv, Specify 1.2.4, Codex CLI, Node.js y npm desde este inicio.
 - Las horas exactas de la primera intervención no se conservaron; sus comandos y resultados conocidos se registran sin estimar la hora.

@@ -37,13 +37,13 @@ try {
 }
 
 $global:LASTEXITCODE = 0
-$captured = @()
+$captured = [System.Collections.Generic.List[object]]::new()
 $caught = $null
 try {
-    $captured = @(& ([ScriptBlock]::Create($Command)) 2>&1)
+    & ([ScriptBlock]::Create($Command)) 2>&1 | ForEach-Object { $captured.Add($_) }
 } catch {
     $caught = $_
-    $captured += $_
+    $captured.Add($_)
 }
 $nativeCode = $global:LASTEXITCODE
 $commandErrors = @($captured | Where-Object {
