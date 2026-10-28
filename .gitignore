@@ -1,0 +1,26 @@
+# Credentials and local secrets
+.env
+.env.*
+!.env.example
+secrets/
+credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python and local uv environments
+.venv/
+__pycache__/
+*.py[cod]
+.uv-cache/
+.lab-tools/
+
+# Command transcripts stay local and out of Git
+.lab-logs/
+logs/
+
+# Preserve Spec Kit skills; ignore other local agent artifacts
+.agents/*
+!.agents/skills/
+!.agents/skills/**
