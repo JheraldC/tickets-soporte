@@ -1361,6 +1361,59 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 
 - Estado: exitoso (codigo nativo: 0).
 
+
+#### Registro 0.73 - Publicar la recuperacion de bitacora y las utilidades de registro del laboratorio
+
+- Fecha y hora: 2026-10-28 14:09:01 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Publicar la recuperacion de bitacora y las utilidades de registro del laboratorio
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    & .\scripts\Enter-Lab.ps1
+    'apply_patch agrego TranscriptOnly al registrador para guardar el resultado del ultimo commit sin generar un ciclo de commits.'
+    git add -- .gitignore AGENTS.md scripts\Invoke-LabCommand.ps1 scripts\Enter-Lab.ps1 docs\bitacora-laboratorio.md
+    if ($LASTEXITCODE) { throw 'No se pudieron preparar los archivos.' }
+    git diff --cached --check
+    if ($LASTEXITCODE) { throw 'El diff tiene errores.' }
+    git commit -m 'docs: preserve setup retries and automate lab log'
+    if ($LASTEXITCODE) { throw 'El commit fallo.' }
+    git push origin main
+    if ($LASTEXITCODE) { throw 'La publicacion fallo.' }
+    $local=git rev-parse HEAD
+    $remote=gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+    if ($LASTEXITCODE -or $local -ne $remote) { throw 'No coincide el commit remoto con el local.' }
+    'Commit verificado en GitHub: '+$local
+    git status --short --branch
+
+- Resultado y salida relevante:
+
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name        Source
+    ----        ------
+    git.exe     C:\Program Files\Git\cmd\git.exe
+    gh.exe      C:\Program Files\GitHub CLI\gh.exe
+    python.exe  C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe      C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe   C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe    C:\Program Files\nodejs\node.exe
+    npm.cmd     C:\Program Files\nodejs\npm.cmd
+    apply_patch agrego TranscriptOnly al registrador para guardar el resultado del ultimo commit sin generar un ciclo de commits.
+    warning: in the working copy of 'docs/bitacora-laboratorio.md', LF will be replaced by CRLF the next time Git touches it
+    warning: in the working copy of 'scripts/Invoke-LabCommand.ps1', LF will be replaced by CRLF the next time Git touches it
+    [main c42384e] docs: preserve setup retries and automate lab log
+     5 files changed, 736 insertions(+), 1 deletion(-)
+     create mode 100644 AGENTS.md
+     create mode 100644 scripts/Enter-Lab.ps1
+     create mode 100644 scripts/Invoke-LabCommand.ps1
+    To https://github.com/JheraldC/tickets-soporte.git
+       fc4c0ac..c42384e  main -> main
+    Commit verificado en GitHub: c42384e4c2e96dcddc401d987c18cf73ddb21dc1
+    ## main...origin/main
+
+- Estado: exitoso (codigo nativo: 0).
+
 ### Pasos posteriores — detenidos por instrucción
 
 #### Paso 1: Specify — Requisitos
