@@ -641,6 +641,21 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Resultado: git diff --cached --check terminó sin emitir errores.
 - Estado: exitoso.
 
+#### Registro 0.47 — Commit inicial local
+
+- Fecha y hora: 28/10/2026, 13:48:47 -05:00.
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Comandos exactos:
+
+      & 'C:\Program Files\Git\cmd\git.exe' commit -m 'chore: initialize Spec Kit and Codex lab'
+      & 'C:\Program Files\Git\cmd\git.exe' log -1 --oneline --decorate
+      & 'C:\Program Files\Git\cmd\git.exe' status --short --branch
+
+- Objetivo: guardar la configuración local, instrucciones de Spec Kit/Codex y bitácora en el primer commit.
+- Resultado: commit dd5be2a en main; 32 archivos versionados. El estado de la rama quedó limpio.
+- Estado: exitoso. El transcript permaneció ignorado.
+
+
 ### Pasos posteriores — detenidos por instrucción
 
 #### Paso 1: Specify — Requisitos
@@ -681,5 +696,5 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Proyecto local inicializado con Spec Kit 1.2.4, integración Codex y scripts PowerShell.
 - Integration status reporta OK y specify check detecta Codex CLI disponible.
 - No se ejecutaron las habilidades del laboratorio y no se generaron requisitos, diseño, tareas ni código.
-- Pendientes del Paso 0: revisar y crear el commit inicial, crear/publicar el repo público, resolver los handles de colaboradores, enviar invitaciones y verificar GitHub.
+- Pendientes del Paso 0: crear/publicar el repo público, resolver los handles de colaboradores, enviar invitaciones y verificar GitHub.
 - Las horas exactas de la primera intervención no se conservaron; sus comandos y resultados conocidos se registran sin estimar la hora.
