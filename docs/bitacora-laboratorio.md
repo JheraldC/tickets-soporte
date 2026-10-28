@@ -1,11 +1,13 @@
 # Bitácora del laboratorio — Sistema de Tickets de Soporte Técnico
 
-**Proyecto local:** C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte
+**Proyecto local:** C:\Users\LENOVO\Documents\VScode\tickets-soporte
 **Inicio:** 28/10/2026, zona horaria America/Lima
 **Alcance:** Paso 0. Los pasos 1–5 no se han iniciado por instrucción del usuario.
 **Estado verificado:** herramientas disponibles mediante scripts/Enter-Lab.ps1, Spec Kit integrado con Codex, repositorio público con main publicada y tres invitaciones de escritura enviadas. Las tres aceptaciones siguen pendientes (registro 0.79).
 
 ## Criterio de registro
+
+Las rutas de ubicaciones anteriores se omiten por solicitud del usuario durante la reubicacion del proyecto. Los comandos y transcript originales completos se conservan en .lab-logs/, excluida de Git. La ruta vigente aparece al inicio de este documento.
 
 Se reconstruyen los comandos ejecutados desde el primer intento de configuración. Para los comandos anteriores a la solicitud de bitácora, la hora exacta no quedó registrada y se señala como no disponible. No se estiman tiempos ni se inventan salidas. El transcript persistente se inició antes de las 13:32 -05:00; la hora exacta no quedó capturada; las copias se guardan en .lab-logs/tickets-soporte-laboratorio-transcript.txt y fuera del repositorio, en el directorio de trabajo de Codex.
 
@@ -18,10 +20,10 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.1 — Búsqueda de memoria del espacio de trabajo
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada en la primera intervención.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
-      Select-String -Path 'C:\Users\LENOVO\.codex\memories\MEMORY.md' -Pattern 'OperadorVirtual114|GitHub|Spec Kit|specify|Codex CLI' -Context 1,3
+      Select-String -Path 'C:\Users\LENOVO\.codex\memories\MEMORY.md' -Pattern '[referencia historica omitida]|GitHub|Spec Kit|specify|Codex CLI' -Context 1,3
 
 - Objetivo: consultar notas previas relevantes.
 - Resultado: coincidencias excesivas y salida truncada; se encontró el antecedente para usar Git de Windows si falla MSYS2.
@@ -30,7 +32,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.2 — Inventario del directorio actual
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       Get-ChildItem -Force | Select-Object Mode,Length,Name; rg --files -g AGENTS.md -g '**/AGENTS.md' -g '.gitignore' -g 'README*' -g '*specify*'
@@ -42,7 +44,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.3 — Detección de herramientas
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       $names = 'git','gh','python','py','uv','specify','codex','node','npm'; foreach ($name in $names) { $cmd = Get-Command $name -ErrorAction SilentlyContinue; if ($cmd) { "${name}: $($cmd.Source)" } else { "${name}: MISSING" } }
@@ -54,7 +56,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.4 — Estado Git inicial del padre
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       git status --short --branch; git remote -v; git branch --show-current
@@ -67,7 +69,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.5 — Autenticación inicial de GitHub CLI
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       gh auth status --hostname github.com
@@ -80,7 +82,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.6 — Versiones iniciales
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       python --version; node --version; npm --version; gh --version; codex --version
@@ -93,7 +95,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.7 — Localización de Git para Windows
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       (Get-Command git -All | Select-Object Source); where.exe git; Get-ChildItem 'C:\Program Files\Git\cmd\git.exe','C:\Program Files\Git\bin\git.exe','C:\Program Files (x86)\Git\cmd\git.exe' -ErrorAction SilentlyContinue | Select-Object FullName
@@ -105,7 +107,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.8 — Comprobación de colisión del proyecto
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       if (Test-Path -LiteralPath '.\tickets-soporte') { Get-Item -Force -LiteralPath '.\tickets-soporte' | Format-List FullName,Mode,Attributes; Get-ChildItem -Force -LiteralPath '.\tickets-soporte' } else { 'tickets-soporte does not exist yet' }
@@ -117,7 +119,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.9 — Instrucciones locales de agentes
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       Get-ChildItem -Force -File -Filter 'AGENTS.md'; if (Test-Path -LiteralPath '.\.agents') { Get-ChildItem -Force -Recurse -File -LiteralPath '.\.agents' | Select-Object -ExpandProperty FullName }
@@ -129,7 +131,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.10 — Consulta adicional de memoria
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       $p='C:\Users\LENOVO\.codex\memories\MEMORY.md'; $a=Get-Content $p; foreach ($i in 1..26) { '{0}: {1}' -f $i,$a[$i-1] }; foreach ($i in 1260..1290) { if ($i -le $a.Length) { '{0}: {1}' -f $i,$a[$i-1] } }
@@ -141,7 +143,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.11 — Búsqueda de Python interrumpida
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       Get-Command winget -ErrorAction SilentlyContinue | Select-Object Source; Get-ChildItem -Force '.\.venv\Scripts\python.exe','C:\Program Files\Python*\python.exe','C:\Users\LENOVO\AppData\Local\Programs\Python\Python*\python.exe' -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName; where.exe python; where.exe uv
@@ -153,7 +155,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.12 — Primer transcript temporal
 
 - Fecha y hora: 28/10/2026; hora exacta no registrada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
       Start-Transcript -Path (Join-Path $env:TEMP 'tickets-soporte-lab-transcript.txt') -Append; Write-Output 'Transcript iniciado para la configuración tickets-soporte; el archivo temporal se moverá a la carpeta excluida del repositorio.'; Stop-Transcript
@@ -168,7 +170,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.13 — Documentación de Spec Kit, uv y colaboradores
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta web.
-- Directorio de contexto: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio de contexto: [directorio de trabajo historico omitido].
 - Acción: web__run, búsqueda oficial. No es un comando PowerShell.
 - Consultas exactas:
 
@@ -186,7 +188,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.14 — Git correcto y revisión del proyecto padre
 
 - Fecha y hora: 28/10/2026, 13:32:07–13:32:09 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' --version
@@ -201,7 +203,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.15 — Intento de iniciar winget
 
 - Fecha y hora: 28/10/2026, 13:32:30 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto: winget --version
 - Objetivo: probar el gestor de paquetes de Windows.
 - Resultado: el ejecutable de WindowsApps no pudo iniciarse por acceso denegado desde esta sesión.
@@ -211,7 +213,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.16 — Localización de Python y uv
 
 - Fecha y hora: 28/10/2026, 13:32:31 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comandos exactos:
 
       Get-ChildItem -Force -File -Path '.\.venv\Scripts\python.exe','C:\Program Files\Python*\python.exe','C:\Users\LENOVO\AppData\Local\Programs\Python\Python*\python.exe' -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
@@ -224,10 +226,10 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.17 — Prueba directa de la venv
 
 - Fecha y hora: 28/10/2026, 13:32:56 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comandos exactos:
 
-      & 'C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\.venv\Scripts\python.exe' --version
+      & '[directorio de trabajo historico omitido]\.venv\Scripts\python.exe' --version
       Test-Path -LiteralPath '.\.venv\Scripts\uv.exe'
 
 - Objetivo: probar Python y uv de la venv existente.
@@ -237,7 +239,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.18 — Consulta oficial de almacenamiento Python/uv
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta web.
-- Directorio de contexto: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio de contexto: [directorio de trabajo historico omitido].
 - Acción: web__run, búsqueda oficial. No es un comando PowerShell.
 - Consultas exactas:
 
@@ -253,7 +255,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.19 — Instalación oficial de uv
 
 - Fecha y hora: 28/10/2026, 13:33:46 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto: irm https://astral.sh/uv/install.ps1 | iex
 - Objetivo: instalar uv.
 - Resultado: uv 0.13.6 instalado en C:\Users\LENOVO\.local\bin, con uv.exe, uvx.exe y uvw.exe.
@@ -262,7 +264,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.20 — Python y specify-cli
 
 - Fecha y hora: 28/10/2026, 13:34:24–13:34:39 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comandos exactos:
 
       uv python install --default 3.11
@@ -277,7 +279,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.21 — Inicialización Spec Kit/Codex
 
 - Fecha y hora: 28/10/2026, 13:34:54 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto: specify init tickets-soporte --integration codex
 - Objetivo: inicializar la subcarpeta y el conector Codex de Spec Kit.
 - Resultado: “Project ready”. Spec Kit comprobó herramientas, instaló integración Codex, plantillas y scripts PowerShell.
@@ -289,7 +291,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.22 — Primer intento de verificación desde la subcarpeta
 
 - Fecha y hora: 28/10/2026, 13:36:06–13:36:09 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       Get-ChildItem -Force -Recurse -File '.\tickets-soporte' | ForEach-Object { $_.FullName.Substring($project.Length + 1) }
@@ -304,7 +306,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.23 — Verificación corregida
 
 - Fecha y hora: 28/10/2026, 13:36:20–13:36:24 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       Get-ChildItem -Force -Recurse -File | ForEach-Object { $_.FullName.Substring($project.Length + 1) }
@@ -319,7 +321,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.24 — Inspección de exclusiones y manifiestos
 
 - Fecha y hora: 28/10/2026, 13:37:04 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       Get-ChildItem -Force | Select-Object Mode,Length,Name
@@ -335,7 +337,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.25 — Búsqueda oficial de colaboradores y privacidad de email
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta web.
-- Directorio de contexto: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio de contexto: [ruta historica del laboratorio omitida].
 - Acción: web__run, búsqueda oficial. No es un comando PowerShell.
 - Consultas exactas:
 
@@ -353,7 +355,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.26 — Creación de .gitignore, bitácora y carpeta de transcript
 
 - Fecha y hora: 28/10/2026, 13:40:05 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       Set-Content -LiteralPath '.gitignore' -Value $ignore -Encoding utf8
@@ -368,7 +370,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.27 — Comprobación de documentación y reglas de exclusión
 
 - Fecha y hora: 28/10/2026, 13:40:30 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       Get-Item -LiteralPath '.gitignore','docs\bitacora-laboratorio.md','.lab-logs\tickets-soporte-laboratorio-transcript.txt' | Select-Object FullName,Length
@@ -384,7 +386,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.28 — Opciones de ejecución de Codex CLI
 
 - Fecha y hora: 28/10/2026, 13:40:41 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       codex exec --help | Select-String -Pattern 'sandbox|git-repo|approval' -Context 0,1
@@ -396,7 +398,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.29 — Primera prueba de reconocimiento de habilidades por Codex
 
 - Fecha y hora: 28/10/2026, 13:40:49 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       codex exec --sandbox read-only --skip-git-repo-check $prompt
@@ -413,7 +415,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.30 — Reintento autorizado de reconocimiento por Codex
 
 - Fecha y hora: 28/10/2026, 13:41:04–13:41:12 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       codex exec --sandbox read-only --skip-git-repo-check $prompt
@@ -427,7 +429,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.31 — Comando interno de inspección ejecutado por Codex
 
 - Fecha y hora: 28/10/2026, 13:41:05 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Acción interna: Codex ejecutó PowerShell en sandbox de solo lectura; se registra el cuerpo mostrado por la salida de la herramienta:
 
       Get-ChildItem -LiteralPath .agents/skills -Directory | ForEach-Object { $skillPath = Join-Path $_.FullName 'SKILL.md'; if (Test-Path -LiteralPath $skillPath) { Write-Output ('--- ' + $_.Name); Get-Content -LiteralPath $skillPath -TotalCount 12 } }
@@ -440,7 +442,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.32 — Inicialización del Git local
 
 - Fecha y hora: 28/10/2026, 13:43:19 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' init --initial-branch=main
@@ -455,7 +457,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.33 — Búsqueda oficial sobre email de commit
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta web.
-- Directorio de contexto: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio de contexto: [ruta historica del laboratorio omitida].
 - Acción: web__run, búsqueda oficial. No es un comando PowerShell.
 - Consultas exactas:
 
@@ -470,7 +472,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.34 — Revisión del primer lote a incluir en Git
 
 - Fecha y hora: 28/10/2026, 13:44:00 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' add -- .gitignore .agents .specify docs
@@ -489,7 +491,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.35 — Corrección de espacios finales
 
 - Fecha y hora: 28/10/2026, 13:44:17 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       $path='docs\bitacora-laboratorio.md'; $doc=[System.IO.File]::ReadAllText((Join-Path (Get-Location) $path)); $lines=$doc -split '\r?\n'; $clean=($lines | ForEach-Object { $_.TrimEnd() }) -join [Environment]::NewLine; $clean=$clean.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine; [System.IO.File]::WriteAllText((Join-Path (Get-Location) $path),$clean,[System.Text.UTF8Encoding]::new($false)); & 'C:\Program Files\Git\cmd\git.exe' add -- docs\bitacora-laboratorio.md; & 'C:\Program Files\Git\cmd\git.exe' diff --cached --check
@@ -501,7 +503,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.36 — Primer intento de reautenticación por navegador
 
 - Fecha y hora: 28/10/2026; hora exacta no quedó capturada por la herramienta de terminal.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto: gh auth login --hostname github.com --git-protocol https --web
 - Interacción: se aceptó la pregunta de GitHub CLI para autenticar Git con credenciales de GitHub.
 - Objetivo: renovar la sesión oficial de GitHub CLI.
@@ -512,7 +514,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.37 — Segundo intento de autenticación y código temporal
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta de terminal.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       $env:Path='C:\Program Files\Git\cmd;'+$env:Path; gh auth login --hostname github.com --git-protocol https --web
@@ -525,7 +527,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.38 — Renovación del código temporal solicitado por el usuario
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta de terminal.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Acciones:
 
       Cancelación del intento de GitHub CLI anterior con Ctrl+C.
@@ -540,7 +542,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.39 — Solicitud de autorización al usuario
 
 - Fecha y hora: 28/10/2026; hora exacta no conservada por el formulario.
-- Directorio de contexto: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio de contexto: [ruta historica del laboratorio omitida].
 - Acción interna: se pidió completar la autorización oficial de GitHub sin compartir el código por chat.
 - Resultado: una primera llamada al formulario usó un campo no admitido y fue rechazada; se corrigió y la llamada fue aceptada. El usuario dijo que el portapapeles se había reemplazado y pidió copiar un código nuevo.
 - Estado: exitoso tras corregir el formato del formulario.
@@ -548,7 +550,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.40 — Comprobaciones GitHub desde el contexto normal
 
 - Fecha y hora: 28/10/2026, 13:46:30–13:46:31 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       gh auth status --hostname github.com
@@ -563,7 +565,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.41 — Verificación autorizada de cuenta GitHub
 
 - Fecha y hora: 28/10/2026, 13:46:46 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       gh auth status --hostname github.com
@@ -578,7 +580,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.42 — Consulta REST del repositorio
 
 - Fecha y hora: 28/10/2026; hora exacta no proporcionada por la herramienta de terminal.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       gh api repos/JheraldC/tickets-soporte --jq '{full_name, private, default_branch}'
@@ -590,7 +592,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.43 — Identidad Git privada del repositorio
 
 - Fecha y hora: 28/10/2026, 13:47:22 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' config user.name 'JheraldC'
@@ -617,7 +619,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.45 — Revisión del lote del commit inicial
 
 - Fecha y hora: 28/10/2026, 13:48:14 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' add -A
@@ -633,7 +635,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.46 — Normalización final de la bitácora
 
 - Fecha y hora: 28/10/2026, 13:48:28 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       $path='docs\bitacora-laboratorio.md'; $doc=[System.IO.File]::ReadAllText((Join-Path (Get-Location) $path)); $lines=$doc -split '\r?\n'; $clean=($lines | ForEach-Object { $_.TrimEnd() }) -join [Environment]::NewLine; $clean=$clean.TrimEnd([char[]]@([char]13,[char]10)) + [Environment]::NewLine; [System.IO.File]::WriteAllText((Join-Path (Get-Location) $path),$clean,[System.Text.UTF8Encoding]::new($false)); & 'C:\Program Files\Git\cmd\git.exe' add -- docs\bitacora-laboratorio.md; & 'C:\Program Files\Git\cmd\git.exe' diff --cached --check
@@ -645,7 +647,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.47 — Commit inicial local
 
 - Fecha y hora: 28/10/2026, 13:48:47 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' commit -m 'chore: initialize Spec Kit and Codex lab'
@@ -660,7 +662,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.48 — Segundo commit local de documentación
 
 - Fecha y hora: 28/10/2026, 13:49:17 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' commit -m 'docs: record local setup and initial commit'
@@ -674,7 +676,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.49 — Creación del repositorio público y publicación inicial
 
 - Fecha y hora: 28/10/2026, 13:49:30 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       gh repo create tickets-soporte --public --description 'Laboratorio de desarrollo guiado por especificaciones con GitHub Spec Kit y Codex.' --source . --remote origin --push
@@ -686,7 +688,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.50 — Verificación de publicación
 
 - Fecha y hora: 28/10/2026, 13:49:52–13:49:53 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       gh repo view JheraldC/tickets-soporte --json name,visibility,url,defaultBranchRef,description
@@ -704,7 +706,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.51 — Primer intento de búsqueda de cuentas
 
 - Fecha y hora: 28/10/2026, 13:50:27–13:50:28 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando ejecutado para cada colaborador, con la consulta personal omitida de la bitácora pública:
 
       gh api search/users -f q=<consulta redactada> -F per_page=20
@@ -717,7 +719,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.52 — Validación del endpoint de búsqueda oficial
 
 - Fecha y hora: 28/10/2026, 13:50:46 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto:
 
       gh api search/users --method GET -f q=octocat -F per_page=1 --jq '.items[].login'
@@ -729,7 +731,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.53 — Búsqueda por partes locales
 
 - Fecha y hora: 28/10/2026, 13:50:57–13:50:59 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando usado para cada colaborador; el valor de búsqueda se omite en la copia pública:
 
       gh api search/users --method GET -f q=<parte local redactada> -F per_page=20
@@ -741,7 +743,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.54 — Búsqueda por correos completos
 
 - Fecha y hora: 28/10/2026, 13:51:18–13:51:19 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando usado para cada colaborador; se omite el correo en el registro público:
 
       gh api search/users --method GET -f q=<email redactado> -F per_page=20
@@ -753,7 +755,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.55 — Estado de invitaciones y colaboradores
 
 - Fecha y hora: 28/10/2026, 13:51:47 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       gh api repos/JheraldC/tickets-soporte/invitations --jq 'length'
@@ -767,7 +769,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.56 — Commit y publicación de la bitácora de GitHub
 
 - Fecha y hora: 28/10/2026, 13:52:44 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       & 'C:\Program Files\Git\cmd\git.exe' commit -m 'docs: record GitHub setup and invite lookup'
@@ -780,7 +782,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.57 — Verificación final local y remota
 
 - Fecha y hora: 28/10/2026, 13:53:16 -05:00.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comandos exactos:
 
       gh repo view JheraldC/tickets-soporte --json name,visibility,url,defaultBranchRef,description
@@ -818,10 +820,10 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.59 — Recuperación del estado y respaldo del primer reintento
 
 - Fecha y hora: 28/10/2026, antes de 13:58:13; hora exacta no capturada.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando PowerShell ejecutado:
 
-      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'; $transcript=Join-Path $project '.lab-logs\tickets-soporte-laboratorio-transcript.txt'; Start-Transcript -Path $transcript -Append | Out-Null; Write-Output "PS> Get-Location; Get-Item '$project'; git status --short --branch; Get-Content docs/bitacora-laboratorio.md -Tail 35"; Write-Output "PWD=$((Get-Location).Path)"; Write-Output "PROJECT_EXISTS=$(Test-Path $project)"; Write-Output "TRANSCRIPT_EXISTS=$(Test-Path $transcript)"; if (Test-Path $project) { Get-Item $project | Select-Object FullName,CreationTime,LastWriteTime; & 'C:\Program Files\Git\cmd\git.exe' -C $project status --short --branch; Get-Content (Join-Path $project 'docs\bitacora-laboratorio.md') -Tail 35 }; Write-Output 'MEMORY_HITS:'; Select-String -Path 'C:\Users\LENOVO\.codex\memories\MEMORY.md' -Pattern 'tickets-soporte|Spec Kit|MSYS2|Git Windows|PowerShell' -Context 1,2 | Select-Object -First 12 | ForEach-Object { $_.ToString() }; Stop-Transcript | Out-Null
+      $project='[ruta historica del laboratorio omitida]'; $transcript=Join-Path $project '.lab-logs\tickets-soporte-laboratorio-transcript.txt'; Start-Transcript -Path $transcript -Append | Out-Null; Write-Output "PS> Get-Location; Get-Item '$project'; git status --short --branch; Get-Content docs/bitacora-laboratorio.md -Tail 35"; Write-Output "PWD=$((Get-Location).Path)"; Write-Output "PROJECT_EXISTS=$(Test-Path $project)"; Write-Output "TRANSCRIPT_EXISTS=$(Test-Path $transcript)"; if (Test-Path $project) { Get-Item $project | Select-Object FullName,CreationTime,LastWriteTime; & 'C:\Program Files\Git\cmd\git.exe' -C $project status --short --branch; Get-Content (Join-Path $project 'docs\bitacora-laboratorio.md') -Tail 35 }; Write-Output 'MEMORY_HITS:'; Select-String -Path 'C:\Users\LENOVO\.codex\memories\MEMORY.md' -Pattern 'tickets-soporte|Spec Kit|MSYS2|Git Windows|PowerShell' -Context 1,2 | Select-Object -First 12 | ForEach-Object { $_.ToString() }; Stop-Transcript | Out-Null
 
 - Objetivo: recuperar el estado existente, respaldar la inspección y consultar el antecedente del fallo de Git MSYS2.
 - Resultado: proyecto y transcript existentes; rama `main` vinculada a `origin/main`; `docs/bitacora-laboratorio.md` ya tenía una modificación preparada. Se encontró el antecedente para usar Git para Windows. La salida de la búsqueda fue abreviada por la herramienta.
@@ -850,16 +852,16 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.61 — Inspección local antes del nuevo cierre
 
 - Fecha y hora: 2026-10-28 13:58:13 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Comando exacto:
 
-      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'
+      $project='[ruta historica del laboratorio omitida]'
       $log=Join-Path $project '.lab-logs\cierre-paso0-transcript.txt'
       Start-Transcript -Path $log -Append | Out-Null
       Write-Output ('Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz'))
       Write-Output 'Comando: inspeccionar instrucciones, estado de Git y bitácora antes del cierre'
       Get-ChildItem -LiteralPath $project -Force | Select-Object Name,Mode
-      Get-ChildItem -LiteralPath 'C:\Users\LENOVO\Documents\VScode\OperadorVirtual114' -Filter AGENTS.md -Force | ForEach-Object { Get-Content -LiteralPath $_.FullName }
+      Get-ChildItem -LiteralPath '[directorio de trabajo historico omitido]' -Filter AGENTS.md -Force | ForEach-Object { Get-Content -LiteralPath $_.FullName }
       & 'C:\Program Files\Git\cmd\git.exe' -C $project status --short --branch
       & 'C:\Program Files\Git\cmd\git.exe' -C $project log -3 --oneline
       Get-Content -LiteralPath (Join-Path $project 'docs\bitacora-laboratorio.md') -Encoding UTF8 -First 30
@@ -874,11 +876,11 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.62 — Documentación del control de Windows e inventario de herramientas
 
 - Fecha y hora: 28/10/2026, entre 13:58:13 y 13:59:33 -05:00; hora exacta en el transcript local.
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114.
+- Directorio: [directorio de trabajo historico omitido].
 - Acción interna: filtrar `ALL_TOOLS` por `repl` y herramientas de GitHub; no apareció `mcp__node_repl__js` en el inventario de este reintento. El conector GitHub ofrece consulta de permisos, pero no envío de invitaciones a colaboradores. El control `cua_repl` sí figura en las herramientas de la sesión.
 - Comando exacto:
 
-      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'
+      $project='[ruta historica del laboratorio omitida]'
       Start-Transcript -Path (Join-Path $project '.lab-logs\cierre-paso0-transcript.txt') -Append | Out-Null
       Write-Output ('Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz'))
       $skillDocs='C:\Users\LENOVO\.codex\plugins\cache\openai-bundled\computer-use\26.1021.31345\docs'
@@ -896,10 +898,10 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.63 — Revalidación de GitHub y localización de herramientas
 
 - Fecha y hora: 2026-10-28 13:59:33 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Comando exacto, ejecutado con el acceso de red y credenciales ya autorizado:
 
-      $project='C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte'
+      $project='[ruta historica del laboratorio omitida]'
       Start-Transcript -Path (Join-Path $project '.lab-logs\cierre-paso0-transcript.txt') -Append | Out-Null
       Write-Output ('Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz'))
       $env:PATH='C:\Program Files\Git\cmd;'+$env:PATH
@@ -930,7 +932,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.65 - Validar el registrador e inventariar ejecutables disponibles
 
 - Fecha y hora: 2026-10-28 14:03:13 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Validar el registrador e inventariar ejecutables disponibles
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -972,7 +974,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.66 - Localizar uv y Codex sin reinstalar herramientas existentes
 
 - Fecha y hora: 2026-10-28 14:03:34 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Localizar uv y Codex sin reinstalar herramientas existentes
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -996,7 +998,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.67 - Resolver rutas de uv y Codex con lectura autorizada
 
 - Fecha y hora: 2026-10-28 14:04:02 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Resolver rutas de uv y Codex con lectura autorizada
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1012,7 +1014,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
           & 'C:\Program Files\Git\cmd\git.exe' --version
           if (Test-Path -LiteralPath '.\.venv\Scripts\python.exe') { & '.\.venv\Scripts\python.exe' --version } else { 'No Python executable in parent project .venv' }
     - Comando exacto: winget --version
-          & 'C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\.venv\Scripts\python.exe' --version
+          & '[directorio de trabajo historico omitido]\.venv\Scripts\python.exe' --version
           Test-Path -LiteralPath '.\.venv\Scripts\uv.exe'
     - Resultado: Python seguía apuntando al runtime de WindowsApps inaccesible; uv.exe no estaba en la venv.
     - Resultado: uv 0.13.6 instalado en C:\Users\LENOVO\.local\bin, con uv.exe, uvx.exe y uvw.exe.
@@ -1036,7 +1038,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.68 - Identificar el CLI de Codex ya instalado y comprobar uv
 
 - Fecha y hora: 2026-10-28 14:04:46 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Identificar el CLI de Codex ya instalado y comprobar uv
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1093,7 +1095,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.69 - Guardar rutas locales y verificar el inicio reproducible creado por apply_patch
 
 - Fecha y hora: 2026-10-28 14:05:36 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Guardar rutas locales y verificar el inicio reproducible creado por apply_patch
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1122,7 +1124,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.70 - Verificar todas las herramientas y la integracion Codex desde una sesion nueva
 
 - Fecha y hora: 2026-10-28 14:05:44 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Verificar todas las herramientas y la integracion Codex desde una sesion nueva
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1258,7 +1260,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.71 - Preservar respaldos locales y verificar exclusiones e inventario Spec Kit
 
 - Fecha y hora: 2026-10-28 14:07:00 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Preservar respaldos locales y verificar exclusiones e inventario Spec Kit
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1312,7 +1314,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.72 - Revisar y preparar la documentacion, los registros automaticos y las exclusiones antes de publicar
 
 - Fecha y hora: 2026-10-28 14:08:17 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Revisar y preparar la documentacion, los registros automaticos y las exclusiones antes de publicar
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1366,7 +1368,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.73 - Publicar la recuperacion de bitacora y las utilidades de registro del laboratorio
 
 - Fecha y hora: 2026-10-28 14:09:01 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Publicar la recuperacion de bitacora y las utilidades de registro del laboratorio
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1419,7 +1421,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.75 - Incorporar el cierre publicado y registrar el acceso real al formulario de colaboradores
 
 - Fecha y hora: 2026-10-28 14:10:43 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Incorporar el cierre publicado y registrar el acceso real al formulario de colaboradores
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1435,7 +1437,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 
     Importacion del cierre anterior conservado en transcript:
     Fecha: 2026-10-28T14:09:31.9950713-05:00
-    Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte
+    Directorio: [ruta historica del laboratorio omitida]
     Comando:
     & .\scripts\Enter-Lab.ps1
     git add -- docs\bitacora-laboratorio.md
@@ -1493,7 +1495,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.76 - Registrar la primera invitacion enviada por correo desde GitHub
 
 - Fecha y hora: 2026-10-28 14:11:55 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Registrar la primera invitacion enviada por correo desde GitHub
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1519,7 +1521,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.77 - Registrar la segunda invitacion enviada y su estado visible
 
 - Fecha y hora: 2026-10-28 14:12:34 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Registrar la segunda invitacion enviada y su estado visible
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1549,7 +1551,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.78 - Registrar la tercera invitacion y preservar evidencia visual local
 
 - Fecha y hora: 2026-10-28 14:13:53 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Registrar la tercera invitacion y preservar evidencia visual local
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1588,7 +1590,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.79 - Verificar por API las tres invitaciones y sus permisos de escritura
 
 - Fecha y hora: 2026-10-28 14:14:06 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Verificar por API las tres invitaciones y sus permisos de escritura
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1634,7 +1636,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.80 - Publicar los resultados de las invitaciones y el cierre verificado del Paso 0
 
 - Fecha y hora: 2026-10-28 14:15:26 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Publicar los resultados de las invitaciones y el cierre verificado del Paso 0
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1673,7 +1675,7 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 #### Registro 0.81 - Corregir el falso positivo de privacidad y publicar el cierre con las tres invitaciones
 
 - Fecha y hora: 2026-10-28 14:16:22 -05:00 (Lima).
-- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Directorio: [ruta historica del laboratorio omitida].
 - Objetivo: Corregir el falso positivo de privacidad y publicar el cierre con las tres invitaciones
 - Comando exacto (datos personales o secretos omitidos si corresponde):
 
@@ -1728,6 +1730,335 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 
 - Estado: exitoso (codigo nativo: 0).
 - Error o solucion: El registro 0.80 fallo antes de publicar porque su busqueda de sufijo encontraba el propio texto de auditoria. Esta consulta verifica direcciones completas; el registrador ahora conserva la salida parcial si ocurre una excepcion.
+
+
+#### Registro 0.83 - Comprobar el destino y las referencias antes de reubicar el proyecto
+
+- Fecha y hora: 2026-10-28 14:19:41 -05:00 (Lima).
+- Directorio: [ruta historica del laboratorio omitida].
+- Objetivo: Comprobar el destino y las referencias antes de reubicar el proyecto
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $destination='C:\Users\LENOVO\Documents\VScode\tickets-soporte'
+    'Destino existente: '+(Test-Path -LiteralPath $destination)
+    & 'C:\Program Files\Git\cmd\git.exe' status --short --branch
+    Get-Content -LiteralPath 'AGENTS.md' -Encoding UTF8
+    Get-Content -LiteralPath 'scripts\Invoke-LabCommand.ps1' -Encoding UTF8 -Tail 22
+    Select-String -LiteralPath 'docs\bitacora-laboratorio.md' -Pattern '[referencia historica omitida]' | Measure-Object | Select-Object Count
+    Get-ChildItem -LiteralPath '.lab-logs' -Filter '*0.82.txt' | Select-Object Name,Length
+    'Instrucciones en el destino padre:'
+    if (Test-Path -LiteralPath 'C:\Users\LENOVO\Documents\VScode\AGENTS.md') { Get-Content -LiteralPath 'C:\Users\LENOVO\Documents\VScode\AGENTS.md' -Encoding UTF8 }
+    'Busqueda de memoria limitada:'
+    Select-String -LiteralPath 'C:\Users\LENOVO\.codex\memories\MEMORY.md' -Pattern 'tickets-soporte' | Select-Object -First 3
+    'Archivos versionados con la ruta del proyecto padre:'
+    $git='C:\Program Files\Git\cmd\git.exe'
+    & $git grep -l -F '[referencia historica omitida]' -- .
+    if ($LASTEXITCODE -eq 1) { $global:LASTEXITCODE=0 }
+    'Estado del destino padre:'
+    & $git -C 'C:\Users\LENOVO\Documents\VScode' rev-parse --show-toplevel
+    if ($LASTEXITCODE -ne 0) { 'El destino padre no es un repositorio Git.'; $global:LASTEXITCODE=0 }
+    'Estado del padre actual limitado al directorio del laboratorio:'
+    & $git -C '[directorio de trabajo historico omitido]' status --short -- tickets-soporte
+    'La peticion actual del usuario autoriza mover este unico proyecto y corregir las referencias documentales.'
+
+- Resultado y salida relevante:
+
+    Destino existente: False
+    ## main...origin/main
+    # Instrucciones del laboratorio
+
+    Este repositorio corresponde al laboratorio Sistema de Tickets de Soporte Técnico.
+
+    ## Alcance autorizado
+
+    El Paso 0 prepara herramientas, Spec Kit, Codex y GitHub. No ejecutar `$speckit-specify`, `$speckit-plan`, `$speckit-tasks`, `$speckit-implement` ni `$speckit-converge` hasta que el usuario autorice la etapa correspondiente.
+
+    ## Registro continuo
+
+    - Antes de ejecutar comandos, registrar fecha y hora de Lima, directorio, comando exacto, objetivo, resultado relevante, estado y solución de errores en `docs/bitacora-laboratorio.md`.
+    - Para comandos de PowerShell, usar `scripts/Invoke-LabCommand.ps1`, que registra la ejecución y su resultado inmediatamente. Usar números de registro consecutivos. Los fallos y reintentos también se registran.
+    - Para herramientas internas, API, navegador y prompts de Codex, añadir una entrada equivalente al terminar cada acción. Incluir parámetros no sensibles y los archivos realmente generados o modificados.
+    - Conservar transcript y respaldos completos en `.lab-logs/`, excluida de Git. No publicar tokens, códigos de acceso, contraseñas, cookies, claves privadas ni correos de compañeros. Nunca ejecutar comandos que impriman credenciales. Usar `-PublicCommand` o `-RedactOutput` cuando el registro público necesite omitir datos personales.
+    - Mantener las secciones Paso 0, Specify, Plan, Tasks, Implement, Converge, Problemas y Conclusiones. Diferenciar lo ejecutado, lo verificado y lo pendiente.
+    - Al finalizar una etapa autorizada, revisar los archivos preparados, comprobar que no incluyan datos sensibles y publicar los cambios junto con la documentación mediante commits descriptivos.
+    - El resultado del último commit y push de la propia bitácora queda en el transcript local; incorporarlo a Markdown en la siguiente intervención para evitar un ciclo infinito de commits de cierre. No presentar una publicación como exitosa hasta comprobarla.
+
+    ## Trabajo local
+
+    Trabajar en Windows y PowerShell. Conservar el proyecto padre y sus archivos. No sobrescribir trabajo existente ni crear otro repositorio para este laboratorio. Cuando Git MSYS2 falle en este equipo, usar `C:\Program Files\Git\cmd\git.exe`.
+
+    Al abrir una nueva sesión, ejecutar `scripts/Enter-Lab.ps1` mediante el registrador. Carga el PATH y los directorios de uv de esta instalación sin modificar la configuración global. Las rutas locales están en `.lab-logs/tool-paths.json`, excluido de Git. No reinstalar herramientas que ya estén presentes.
+
+    Las habilidades de Spec Kit para Codex están en `.agents/skills/`. Seguir las instrucciones de la habilidad correspondiente cuando el usuario autorice una etapa.
+    if ($publicOutput.Length -gt 14000) { $publicOutput = $publicOutput.Substring(0, 14000) + "`n[Salida publica abreviada; respaldo completo local.]" }
+    $commandBlock = ((ConvertTo-PublicText $PublicCommand) -split '\r?\n' | ForEach-Object { if ([string]::IsNullOrWhiteSpace($_)) { '' } else { '    ' + $_.TrimEnd() } }) -join "`n"
+    $outputBlock = ($publicOutput -split '\r?\n' | ForEach-Object { if ([string]::IsNullOrWhiteSpace($_)) { '' } else { '    ' + $_.TrimEnd() } }) -join "`n"
+    $entry = "`n#### Registro $Step - $Objective`n`n- Fecha y hora: $($started.ToString('yyyy-MM-dd HH:mm:ss zzz')) (Lima).`n- Directorio: $cwd.`n- Objetivo: $Objective`n- Comando exacto (datos personales o secretos omitidos si corresponde):`n`n$commandBlock`n`n- Resultado y salida relevante:`n`n$outputBlock`n`n- Estado: $status (codigo nativo: $nativeCode).`n"
+    if ($Solution) { $entry += "- Error o solucion: $(ConvertTo-PublicText $Solution)`n" }
+    if (-not $ok -and -not $Solution) { $entry += "- Error o solucion: revisar la salida anterior; la correccion se documentara en el siguiente registro.`n" }
+    $entry += "`n"
+
+    $privateRecord = "Fecha: $($started.ToString('o'))`r`nDirectorio: $cwd`r`nComando:`r`n$Command`r`nEstado: $status`r`nCodigo: $nativeCode`r`nSalida:`r`n$(ConvertTo-PublicText $outputText)`r`n"
+    [IO.File]::WriteAllText($recordPath, $privateRecord, $utf8)
+    if (-not $TranscriptOnly) {
+        $document = [IO.File]::ReadAllText($bitacoraPath, [Text.Encoding]::UTF8)
+        $markerIndex = $document.IndexOf('
+#### Registro 0.84 - Verificar con permisos autorizados el destino de la reubicacion
+
+- Fecha y hora: 2026-10-28 14:20:42 -05:00 (Lima).
+- Directorio: [ruta historica del laboratorio omitida].
+- Objetivo: Verificar con permisos autorizados el destino de la reubicacion
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $source='[ruta historica del laboratorio omitida]'
+    $destination='C:\Users\LENOVO\Documents\VScode\tickets-soporte'
+    $parent='C:\Users\LENOVO\Documents\VScode'
+    Get-Item -LiteralPath $source,$parent | Select-Object FullName,Attributes
+    if (Test-Path -LiteralPath $destination) { throw 'El destino ya existe; se cancela para no sobrescribir.' }
+    $git='C:\Program Files\Git\cmd\git.exe'
+    $parentResult=@(& $git -C $parent rev-parse --show-toplevel 2>&1)
+    if ($LASTEXITCODE -eq 0) { 'Repositorio del destino padre: '+($parentResult -join ' ') }
+    elseif (($parentResult -join ' ') -match 'not a git repository') { 'El directorio VScode no pertenece a otro repositorio Git.' }
+    else { throw ($parentResult -join ' ') }
+    'Correccion de 0.83: Permission denied no permitia concluir si el directorio padre era un repositorio. Esta comprobacion utiliza permisos de lectura autorizados.'
+    'La siguiente operacion movera este unico directorio completo, incluida su carpeta .git y los registros locales; la ubicacion de destino esta libre.'
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+
+    FullName                                                            Attributes
+    --------                                                            ----------
+    [ruta historica del laboratorio omitida]  Directory
+    C:\Users\LENOVO\Documents\VScode                                     Directory
+    El directorio VScode no pertenece a otro repositorio Git.
+    Correccion de 0.83: Permission denied no permitia concluir si el directorio padre era un repositorio. Esta comprobacion utiliza permisos de lectura autorizados.
+    La siguiente operacion movera este unico directorio completo, incluida su carpeta .git y los registros locales; la ubicacion de destino esta libre.
+
+- Estado: exitoso (codigo nativo: 0).
+- Error o solucion: La consulta del padre en 0.83 habia sido denegada; su conclusion sobre Git se corrige mediante esta lectura real.
+
+
+#### Registro 0.85 - Reubicacion fisica del proyecto
+
+- Fecha y hora: 2026-10-28 14:21:30 -05:00 (Lima).
+- Directorio de ejecucion: [directorio inicial omitido por solicitud del usuario].
+- Objetivo: mover el repositorio completo directamente a la carpeta VScode, sin sobrescribir un destino existente.
+- Comando ejecutado; las rutas de origen se omiten en el registro publico por solicitud expresa del usuario. El comando original completo esta en .lab-logs/reubicacion-comando.ps1:
+
+    $source='[ruta original del laboratorio omitida]'
+    $destination='C:\Users\LENOVO\Documents\VScode\tickets-soporte'
+    $intendedRoot='C:\Users\LENOVO\Documents\VScode'
+    $sourceResolved=(Resolve-Path -LiteralPath $source -ErrorAction Stop).Path
+    $rootResolved=(Resolve-Path -LiteralPath $intendedRoot -ErrorAction Stop).Path.TrimEnd('\')
+    $destinationResolved=[IO.Path]::GetFullPath($destination)
+    if (-not $sourceResolved.StartsWith($rootResolved+'\',[StringComparison]::OrdinalIgnoreCase) -or -not $destinationResolved.StartsWith($rootResolved+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'La ruta queda fuera del directorio VScode autorizado.' }
+    if ($sourceResolved -ne $source -or $destinationResolved -ne $destination -or (Split-Path -Leaf $sourceResolved) -ne 'tickets-soporte' -or (Split-Path -Parent $destinationResolved) -ne $rootResolved) { throw 'Las rutas resueltas no son las solicitadas.' }
+    if (Test-Path -LiteralPath $destinationResolved) { throw 'El destino existe; no se sobrescribe.' }
+    $gitRoot=& 'C:\Program Files\Git\cmd\git.exe' -C $sourceResolved rev-parse --show-toplevel
+    if ($LASTEXITCODE -or $gitRoot.Replace('/','\') -ne $sourceResolved) { throw 'El origen no es el repositorio esperado.' }
+    $auditId=[Guid]::NewGuid().ToString('N')
+    $transcriptPath=Join-Path $env:TEMP ('tickets-soporte-reubicacion-'+$auditId+'.txt')
+    $manifestPath=Join-Path $env:TEMP ('tickets-soporte-manifiesto-'+$auditId+'.json')
+    Start-Transcript -Path $transcriptPath -ErrorAction Stop | Out-Null
+    try {
+        'Hora Lima: '+[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow,'SA Pacific Standard Time').ToString('yyyy-MM-dd HH:mm:ss zzz')
+        'Origen resuelto y autorizado: '+$sourceResolved
+        'Destino resuelto y autorizado: '+$destinationResolved
+        $manifest=@(Get-ChildItem -LiteralPath $sourceResolved -Force -Recurse -File | ForEach-Object { [pscustomobject]@{ RelativePath=$_.FullName.Substring($sourceResolved.Length+1); SHA256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
+        [IO.File]::WriteAllText($manifestPath,($manifest | ConvertTo-Json -Depth 4),(New-Object Text.UTF8Encoding($false)))
+        Set-Location -LiteralPath $rootResolved
+        Move-Item -LiteralPath $sourceResolved -Destination $destinationResolved -ErrorAction Stop
+        if (Test-Path -LiteralPath $sourceResolved) { throw 'El origen aun existe.' }
+        $after=@(Get-ChildItem -LiteralPath $destinationResolved -Force -Recurse -File)
+        if ($after.Count -ne $manifest.Count) { throw 'Cambio el numero de archivos durante el movimiento.' }
+        foreach ($file in $manifest) { $newPath=Join-Path $destinationResolved $file.RelativePath; if (-not (Test-Path -LiteralPath $newPath -PathType Leaf) -or (Get-FileHash -LiteralPath $newPath -Algorithm SHA256).Hash -ne $file.SHA256) { throw ('No coincide el archivo '+$file.RelativePath) } }
+        'Movimiento completado y verificado. Archivos preservados con SHA256 identico: '+$manifest.Count
+        & 'C:\Program Files\Git\cmd\git.exe' -C $destinationResolved status --short --branch
+        & 'C:\Program Files\Git\cmd\git.exe' -C $destinationResolved remote -v
+        if ($LASTEXITCODE) { throw 'No se pudo verificar Git tras mover.' }
+    } finally { Stop-Transcript | Out-Null }
+    Copy-Item -LiteralPath $transcriptPath -Destination (Join-Path $destinationResolved '.lab-logs\reubicacion-transcript.txt') -ErrorAction Stop
+    Copy-Item -LiteralPath $manifestPath -Destination (Join-Path $destinationResolved '.lab-logs\reubicacion-manifiesto-sha256.json') -ErrorAction Stop
+    'Copias del transcript y manifiesto guardadas en los registros locales excluidos de Git.'
+
+- Resultado: movimiento completado mediante Move-Item. Los 180 archivos, incluida la carpeta .git y los registros privados, conservaron sus SHA256. El origen ya no existe; el destino es C:\Users\LENOVO\Documents\VScode\tickets-soporte. Git conserva main y origin https://github.com/JheraldC/tickets-soporte.git.
+- Estado: exitoso.
+- Respaldo: .lab-logs/reubicacion-transcript.txt y .lab-logs/reubicacion-manifiesto-sha256.json; se guardaron tambien los parametros originales en ubicacion-anterior.json y este comando en reubicacion-comando.ps1 mediante WriteAllText, sin sobrescribir archivos. Todos permanecen excluidos de Git.
+
+
+#### Registro 0.86 - Actualizar las rutas documentales y verificar el proyecto en su nueva ubicacion
+
+- Fecha y hora: 2026-10-28 14:24:14 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\tickets-soporte.
+- Objetivo: Actualizar las rutas documentales y verificar el proyecto en su nueva ubicacion
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    $project=(Get-Location).Path
+    $legacy=Get-Content -LiteralPath '.lab-logs\ubicacion-anterior.json' -Raw -Encoding UTF8 | ConvertFrom-Json
+    function Remove-PreviousLocation([string]$text) {
+        $text=[regex]::Replace($text,[regex]::Escape($legacy.SourcePath),'[ruta historica del laboratorio omitida]','IgnoreCase')
+        $text=[regex]::Replace($text,[regex]::Escape($legacy.SourceParent),'[directorio de trabajo historico omitido]','IgnoreCase')
+        [regex]::Replace($text,[regex]::Escape($legacy.SourceLeaf),'[referencia historica omitida]','IgnoreCase')
+    }
+    $path=Join-Path $project 'docs\bitacora-laboratorio.md'
+    $backup=Join-Path $project '.lab-logs\bitacora-antes-de-actualizar-rutas.md'
+    if (Test-Path -LiteralPath $backup) { throw 'El respaldo ya existe; no se sobrescribe.' }
+    Copy-Item -LiteralPath $path -Destination $backup -ErrorAction Stop
+    $doc=[IO.File]::ReadAllText($path,[Text.Encoding]::UTF8)
+    $doc=[regex]::Replace($doc,'(?m)^\*\*Proyecto local:\*\*[^\r\n]*','**Proyecto local:** '+$project)
+    $doc=Remove-PreviousLocation $doc
+    $note='Las rutas de ubicaciones anteriores se omiten por solicitud del usuario durante la reubicacion del proyecto. Los comandos y transcript originales completos se conservan en .lab-logs/, excluida de Git. La ruta vigente aparece al inicio de este documento.'
+    $doc=$doc.Replace('## Criterio de registro',('## Criterio de registro'+"`n`n"+$note))
+    [IO.File]::WriteAllText($path,$doc,(New-Object Text.UTF8Encoding($false)))
+    $agentsPath=Join-Path $project 'AGENTS.md'
+    $instructions=[IO.File]::ReadAllText($agentsPath,[Text.Encoding]::UTF8)
+    $instructions=$instructions.Replace('Conservar el proyecto padre y sus archivos.','Conservar los demas proyectos de la carpeta VScode.')
+    $instructions=$instructions.Replace('Este repositorio corresponde al laboratorio Sistema de Tickets de Soporte Técnico.',('Este repositorio corresponde al laboratorio Sistema de Tickets de Soporte Técnico.'+"`n`n"+'Ruta local actual: '+$project+'.'))
+    [IO.File]::WriteAllText($agentsPath,$instructions,(New-Object Text.UTF8Encoding($false)))
+    'Bitacora e instrucciones actualizadas. Las rutas antiguas se omiten en las entradas historicas y se conserva un respaldo original local.'
+    'Importacion del resultado del cierre 0.82, con las ubicaciones historicas omitidas:'
+    Remove-PreviousLocation (Get-Content -LiteralPath '.lab-logs\20261028-141707-855-0.82.txt' -Raw -Encoding UTF8)
+    & .\scripts\Enter-Lab.ps1
+    specify integration status
+    if ($LASTEXITCODE) { throw 'La integracion de Spec Kit no es valida en la nueva ubicacion.' }
+    $root=git rev-parse --show-toplevel
+    if ($root.Replace('/','\') -ne $project) { throw 'Git no reconoce la nueva raiz.' }
+    if (Test-Path -LiteralPath $legacy.SourcePath) { throw 'Aun existe el directorio de origen.' }
+    $matches=@(git grep -l -F $legacy.SourceLeaf -- .)
+    if ($LASTEXITCODE -eq 0) { throw ('Quedan referencias en: '+($matches -join ', ')) } elseif ($LASTEXITCODE -ne 1) { throw 'No se pudo comprobar la documentacion.' }
+    'No quedan referencias a la ubicacion anterior en los archivos versionados actuales. El origen ya no existe.'
+    git remote -v
+    git status --short --branch
+    $global:LASTEXITCODE=0
+
+- Resultado y salida relevante:
+
+    Bitacora e instrucciones actualizadas. Las rutas antiguas se omiten en las entradas historicas y se conserva un respaldo original local.
+    Importacion del resultado del cierre 0.82, con las ubicaciones historicas omitidas:
+    Fecha: 2026-10-28T14:17:07.8556512-05:00
+    Directorio: [ruta historica del laboratorio omitida]
+    Comando:
+    & .\scripts\Enter-Lab.ps1
+    git add -- docs\bitacora-laboratorio.md
+    git diff --cached --check
+    if ($LASTEXITCODE) { throw 'El cierre tiene errores de formato.' }
+    git commit -m 'docs: record final verification and audit correction'
+    if ($LASTEXITCODE) { throw 'El commit final fallo.' }
+    git push origin main
+    if ($LASTEXITCODE) { throw 'El push final fallo.' }
+    $local=git rev-parse HEAD
+    $tracking=git rev-parse origin/main
+    $remote=gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+    if ($LASTEXITCODE -or $local -ne $tracking -or $local -ne $remote) { throw 'La rama publicada no coincide con la local.' }
+    if (@(git status --porcelain).Count) { throw 'Quedan cambios sin publicar.' }
+    gh repo view JheraldC/tickets-soporte --json name,visibility,url,defaultBranchRef,description
+    $invites=@(gh api repos/JheraldC/tickets-soporte/invitations --jq 'map({id,login:.invitee.login,permissions})' | ConvertFrom-Json)
+    if ($LASTEXITCODE) { throw 'No se pudieron consultar las invitaciones.' }
+    $collaborators=@(gh api repos/JheraldC/tickets-soporte/collaborators --jq 'map({login,permissions})' | ConvertFrom-Json)
+    if ($LASTEXITCODE) { throw 'No se pudieron consultar los colaboradores.' }
+    foreach ($expected in @('AngelCaceresPari01','YimyAlfredo','Braulio20182313')) {
+        $pending=@($invites | Where-Object login -eq $expected)
+        $active=@($collaborators | Where-Object login -eq $expected)
+        if ($pending.Count -eq 1 -and $pending[0].permissions -eq 'write') { "$expected : invitacion enviada, write, aceptacion pendiente, id $($pending[0].id)" }
+        elseif ($active.Count -eq 1 -and $active[0].permissions.push) { "$expected : invitacion aceptada, escritura activa" }
+        else { throw ('No hay invitacion de escritura ni acceso activo para '+$expected) }
+    }
+    git check-ignore -v '.lab-logs\comandos-transcript.txt' '.lab-logs\tool-paths.json' '.lab-logs\invitaciones-github-20261028.png'
+    Get-Item -LiteralPath 'docs\bitacora-laboratorio.md','AGENTS.md','scripts\Enter-Lab.ps1','scripts\Invoke-LabCommand.ps1' | Select-Object Name,Length
+    'HEAD = origin/main = GitHub main: '+$local
+    'Arbol limpio. Paso 0 configurado y verificado; siguientes etapas sin ejecutar. Resultado del ultimo commit conservado en el transcript local segun la nota de cierre de la bitacora.'
+    Estado: exitoso
+    Codigo: 0
+    Salida:
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name                    Source
+    ----                    ------
+    git.exe                 C:\Program Files\Git\cmd\git.exe
+    gh.exe                  C:\Program Files\GitHub CLI\gh.exe
+    python.exe              C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe                  C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe             C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe               C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe                C:\Program Files\nodejs\node.exe
+    npm.cmd                 C:\Program Files\nodejs\npm.cmd
+    warning: in the working copy of 'docs/bitacora-laboratorio.md', LF will be replaced by CRLF the next time Git touches it
+    [main d31de0a] docs: record final verification and audit correction
+     1 file changed, 60 insertions(+)
+    To https://github.com/JheraldC/tickets-soporte.git
+       133a76d..d31de0a  main -> main
+    {"defaultBranchRef":{"name":"main"},"description":"Laboratorio de desarrollo guiado por especificaciones con GitHub Spec Kit y Codex.","name":"tickets-soporte","url":"https://github.com/JheraldC/tickets-soporte","visibility":"PUBLIC"}
+    AngelCaceresPari01 : invitacion enviada, write, aceptacion pendiente, id 340233509
+    YimyAlfredo : invitacion enviada, write, aceptacion pendiente, id 340233659
+    Braulio20182313 : invitacion enviada, write, aceptacion pendiente, id 340233745
+    .gitignore:25:.lab-logs/	".lab-logs\\comandos-transcript.txt"
+    .gitignore:25:.lab-logs/	".lab-logs\\tool-paths.json"
+    .gitignore:25:.lab-logs/	".lab-logs\\invitaciones-github-20261028.png"
+    bitacora-laboratorio.md
+    AGENTS.md
+    Enter-Lab.ps1
+    Invoke-LabCommand.ps1
+    HEAD = origin/main = GitHub main: d31de0a76f9d460d40a727101585ea6beb2af484
+    Arbol limpio. Paso 0 configurado y verificado; siguientes etapas sin ejecutar. Resultado del ultimo commit conservado en el transcript local segun la nota de cierre de la bitacora.
+
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name        Source
+    ----        ------
+    git.exe     C:\Program Files\Git\cmd\git.exe
+    gh.exe      C:\Program Files\GitHub CLI\gh.exe
+    python.exe  C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe      C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe   C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe    C:\Program Files\nodejs\node.exe
+    npm.cmd     C:\Program Files\nodejs\npm.cmd
+    Integration status: OK
+    Default integration: codex
+    Installed integrations: codex
+    Multi-install safe: yes
+    Shared templates target alignment: codex
+    Modified managed files: 0
+    Missing managed files: 0
+    Invalid manifest paths: 0
+    Unchecked manifests: 0
+    No quedan referencias a la ubicacion anterior en los archivos versionados actuales. El origen ya no existe.
+    origin	https://github.com/JheraldC/tickets-soporte.git (fetch)
+    origin	https://github.com/JheraldC/tickets-soporte.git (push)
+    ## main...origin/main
+     M AGENTS.md
+     M docs/bitacora-laboratorio.md
+
+- Estado: exitoso (codigo nativo: 0).
+
+### Pasos posteriores')
+        if ($markerIndex -lt 0) { throw 'No se encontro el lugar de insercion en la bitacora.' }
+        $document = $document.Insert($markerIndex, $entry)
+        [IO.File]::WriteAllText($bitacoraPath, $document, $utf8)
+    }
+    Write-Output (ConvertTo-PublicText $PublicCommand)
+    Write-Output $publicOutput
+    Write-Output "Registro ${Step}: $status; $recordPath"
+    if ($transcriptStarted) { Stop-Transcript | Out-Null }
+    if (-not $ok) { throw "El comando del registro $Step fallo. La bitacora conserva el resultado." }
+
+    Count
+    -----
+       86
+        1
+    Instrucciones en el destino padre:
+    Busqueda de memoria limitada:
+    Archivos versionados con la ruta del proyecto padre:
+    docs/bitacora-laboratorio.md
+    Estado del destino padre:
+    fatal: cannot change to 'C:\Users\LENOVO\Documents\VScode': Permission denied
+    El destino padre no es un repositorio Git.
+    Estado del padre actual limitado al directorio del laboratorio:
+    ?? tickets-soporte/
+    La peticion actual del usuario autoriza mover este unico proyecto y corregir las referencias documentales.
+
+- Estado: exitoso (codigo nativo: 0).
 
 ### Pasos posteriores — detenidos por instrucción
 

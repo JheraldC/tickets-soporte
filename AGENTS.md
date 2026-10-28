@@ -2,6 +2,8 @@
 
 Este repositorio corresponde al laboratorio Sistema de Tickets de Soporte Técnico.
 
+Ruta local actual: C:\Users\LENOVO\Documents\VScode\tickets-soporte.
+
 ## Alcance autorizado
 
 El Paso 0 prepara herramientas, Spec Kit, Codex y GitHub. No ejecutar `$speckit-specify`, `$speckit-plan`, `$speckit-tasks`, `$speckit-implement` ni `$speckit-converge` hasta que el usuario autorice la etapa correspondiente.
@@ -18,7 +20,7 @@ El Paso 0 prepara herramientas, Spec Kit, Codex y GitHub. No ejecutar `$speckit-
 
 ## Trabajo local
 
-Trabajar en Windows y PowerShell. Conservar el proyecto padre y sus archivos. No sobrescribir trabajo existente ni crear otro repositorio para este laboratorio. Cuando Git MSYS2 falle en este equipo, usar `C:\Program Files\Git\cmd\git.exe`.
+Trabajar en Windows y PowerShell. Conservar los demas proyectos de la carpeta VScode. No sobrescribir trabajo existente ni crear otro repositorio para este laboratorio. Cuando Git MSYS2 falle en este equipo, usar `C:\Program Files\Git\cmd\git.exe`.
 
 Al abrir una nueva sesión, ejecutar `scripts/Enter-Lab.ps1` mediante el registrador. Carga el PATH y los directorios de uv de esta instalación sin modificar la configuración global. Las rutas locales están en `.lab-logs/tool-paths.json`, excluido de Git. No reinstalar herramientas que ya estén presentes.
 
