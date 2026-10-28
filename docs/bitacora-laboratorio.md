@@ -1669,6 +1669,66 @@ No se registran tokens, contraseñas, códigos temporales de autenticación ni c
 - Estado: fallido (codigo nativo: 1).
 - Error o solucion: revisar la salida anterior; la correccion se documentara en el siguiente registro.
 
+
+#### Registro 0.81 - Corregir el falso positivo de privacidad y publicar el cierre con las tres invitaciones
+
+- Fecha y hora: 2026-10-28 14:16:22 -05:00 (Lima).
+- Directorio: C:\Users\LENOVO\Documents\VScode\OperadorVirtual114\tickets-soporte.
+- Objetivo: Corregir el falso positivo de privacidad y publicar el cierre con las tres invitaciones
+- Comando exacto (datos personales o secretos omitidos si corresponde):
+
+    & .\scripts\Enter-Lab.ps1
+    'Correccion de 0.80: la busqueda del sufijo de correo coincidio con el texto del propio comando de auditoria. Se comprueban direcciones completas para evitar ese falso positivo; no se llego al commit ni al push de 0.80.'
+    'apply_patch mejoro el registrador para preservar tambien la salida anterior a una excepcion, que antes podia perderse.'
+    $fullEmail='[A-Za-z0-9._%+-]+@unsa[.]edu[.]pe'
+    if (Select-String -LiteralPath 'docs\bitacora-laboratorio.md' -Pattern $fullEmail -Quiet) { throw 'Hay una direccion institucional completa en la bitacora publica.' }
+    'No se encontraron direcciones institucionales completas.'
+    git add -- docs\bitacora-laboratorio.md scripts\Invoke-LabCommand.ps1
+    git diff --cached --check
+    if ($LASTEXITCODE) { throw 'Hay errores de formato.' }
+    $private=@(git ls-files | Where-Object { $_ -match '(^|/)(\.lab-logs|\.env(?:\..*)?|\.codex|\.aws|\.ssh)(/|$)|(^|/)(auth|credentials)\.json$|\.(pem|key|p12|pfx)$' })
+    if ($private.Count) { throw 'Hay archivos sensibles versionados.' }
+    $findings=@(git grep --cached -n -I -E 'gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----')
+    if ($LASTEXITCODE -eq 0) { throw 'Se detecto un patron de credencial.' } elseif ($LASTEXITCODE -ne 1) { throw 'Fallo el escaneo.' }
+    'Exclusiones y patrones comunes de credenciales verificados sin hallazgos.'
+    git commit -m 'docs: verify collaborator invitations and complete step zero'
+    if ($LASTEXITCODE) { throw 'El commit fallo.' }
+    git push origin main
+    if ($LASTEXITCODE) { throw 'El push fallo.' }
+    $local=git rev-parse HEAD
+    $remote=gh api repos/JheraldC/tickets-soporte/commits/main --jq '.sha'
+    if ($LASTEXITCODE -or $local -ne $remote) { throw 'No coincide la publicacion.' }
+    'Publicacion verificada: '+$local
+
+- Resultado y salida relevante:
+
+    Entorno del laboratorio cargado para esta sesion de PowerShell.
+
+    Name        Source
+    ----        ------
+    git.exe     C:\Program Files\Git\cmd\git.exe
+    gh.exe      C:\Program Files\GitHub CLI\gh.exe
+    python.exe  C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\python.exe
+    uv.exe      C:\Users\LENOVO\.local\bin\uv.exe
+    specify.exe C:\Users\LENOVO\.codex\visualizations\2026\10\28\01a183c2-e2d1-77f1-9a31-7e26aa3b04d4\.lab-tools\bin\specify.exe
+    codex.exe   C:\Users\LENOVO\AppData\Local\OpenAI\Codex\bin\2993767bd1dfb009\codex.exe
+    node.exe    C:\Program Files\nodejs\node.exe
+    npm.cmd     C:\Program Files\nodejs\npm.cmd
+    Correccion de 0.80: la busqueda del sufijo de correo coincidio con el texto del propio comando de auditoria. Se comprueban direcciones completas para evitar ese falso positivo; no se llego al commit ni al push de 0.80.
+    apply_patch mejoro el registrador para preservar tambien la salida anterior a una excepcion, que antes podia perderse.
+    No se encontraron direcciones institucionales completas.
+    warning: in the working copy of 'docs/bitacora-laboratorio.md', LF will be replaced by CRLF the next time Git touches it
+    warning: in the working copy of 'scripts/Invoke-LabCommand.ps1', LF will be replaced by CRLF the next time Git touches it
+    Exclusiones y patrones comunes de credenciales verificados sin hallazgos.
+    [main 133a76d] docs: verify collaborator invitations and complete step zero
+     2 files changed, 270 insertions(+), 6 deletions(-)
+    To https://github.com/JheraldC/tickets-soporte.git
+       e424b5f..133a76d  main -> main
+    Publicacion verificada: 133a76db3d2eb6daf7552335ca6e81db2611e62c
+
+- Estado: exitoso (codigo nativo: 0).
+- Error o solucion: El registro 0.80 fallo antes de publicar porque su busqueda de sufijo encontraba el propio texto de auditoria. Esta consulta verifica direcciones completas; el registrador ahora conserva la salida parcial si ocurre una excepcion.
+
 ### Pasos posteriores — detenidos por instrucción
 
 #### Paso 1: Specify — Requisitos
