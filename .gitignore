@@ -29,3 +29,10 @@ logs/
 .agents/*
 !.agents/skills/
 !.agents/skills/**
+
+# Vite, TypeScript, and Vitest outputs
+node_modules/
+dist/
+coverage/
+.playwright-cli/
+output/playwright/
