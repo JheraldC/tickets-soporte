@@ -303,3 +303,8 @@ Task: "T059 Estilos de la barra de filtros en src/styles/components.css"
 - `src/ui/app.ts` (`mountApp`) no figura en el árbol de plan.md; se añade para que las pruebas de integración monten la app sin depender de `main.ts`, que queda solo como punto de composición
 - Verificar que las pruebas fallan antes de implementar
 - Evitar tareas vagas, conflictos en el mismo archivo y dependencias entre historias que rompan su independencia
+
+## Phase 9: Convergence
+
+- [ ] T074 [CRITICAL] Impedir que una operación posterior sobrescriba el valor original si falla la escritura del respaldo en src/storage/localStorageRepository.ts; conservarlo, informar que el respaldo no se creó y cubrir carga dañada seguida de una operación con pruebas unitarias y de integración per Constitution VI y FR-027 (contradicts)
+- [ ] T075 Reevaluar y actualizar el Constitution Check y Complexity Tracking de specs/001-gestion-tickets-soporte/plan.md contra la constitución ratificada v1.0.0 per Constitution Governance (partial)
