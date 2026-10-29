@@ -111,7 +111,20 @@ El script `.specify/scripts/powershell/setup-plan.ps1 -Json` copió la plantilla
 
 ## Paso 3: Tasks — Generación de tareas
 
-Pendiente. No se ha ejecutado `$speckit-tasks`.
+**Ejecución:** 29/10/2026 (Lima).
+**Prompt ejecutado:**
+
+```text
+$speckit-tasks Genera las tareas a partir de spec.md, plan.md, data-model.md, contracts/ y quickstart.md, organizadas por historia de usuario en orden de prioridad (US1 a US5), de modo que cada historia pueda implementarse y probarse de forma independiente. Incluye tareas de pruebas con Vitest siguiendo TDD: en cada historia, las pruebas unitarias del dominio y del almacenamiento y las pruebas de integración de la interfaz en jsdom se escriben antes que la implementación y deben fallar primero. Empieza con una fase de configuración (proyecto Vite con TypeScript strict, Vitest con jsdom y cobertura, estructura src/domain, src/storage, src/ui y src/styles) y una fase base con tipos, constantes, puertos, validación y repositorios. Marca con [P] las tareas paralelizables, indica la ruta exacta de cada archivo y cierra con una fase de pulido: diseño responsive, accesibilidad WCAG AA, cobertura mínima del 90 % en dominio y almacenamiento, npm run build sin errores y validación de los escenarios de quickstart.md. Define como MVP la historia US1.
+```
+
+El script `.specify/scripts/powershell/setup-tasks.ps1 -Json` localizó la funcionalidad y los documentos de diseño disponibles.
+
+| Archivo | Resultado |
+| --- | --- |
+| `specs/001-gestion-tickets-soporte/tasks.md` | 73 tareas (T001–T073) en 8 fases: Setup (7), Foundational (18), US1 (12, MVP), US2 (7), US3 (8), US4 (7), US5 (6) y Polish (8). 41 tareas marcadas `[P]`. Cada historia empieza con pruebas Vitest que deben fallar antes de implementar. |
+
+**Resultado:** Lista de tareas lista para `$speckit-implement`, con rutas exactas, dependencias, ejemplos de paralelización y estrategia MVP → entrega incremental. Se añadió `src/ui/app.ts` (`mountApp`), que no estaba en el árbol del plan, para montar la app en las pruebas de integración. No hubo hooks de extensión registrados.
 
 ## Paso 4: Implement — Implementación
 
