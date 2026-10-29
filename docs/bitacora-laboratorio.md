@@ -43,7 +43,27 @@ Missing managed files: 0
 
 **Resultado:** Spec Kit 1.2.4 quedó inicializado para Codex. Los requisitos, el diseño, las tareas y el código de la aplicación todavía no se han generado.
 
-Antes de Specify, queda pendiente definir los principios del proyecto mediante `$speckit-constitution`, como recomienda la guía oficial.
+### Constitución del proyecto
+
+**Ejecución:** 29/10/2026 (Lima), después de Specify y Plan.
+**Prompt ejecutado:**
+
+```text
+$speckit-constitution Crea los principios del proyecto Sistema de Tickets de Soporte Técnico. Prioriza:
+1) Separación por capas: interfaz, lógica de negocio y almacenamiento independientes; la lógica de negocio no accede al DOM ni a localStorage.
+2) Calidad del código: TypeScript en modo strict, sin "any" injustificado, funciones pequeñas y nombres claros.
+3) Pruebas obligatorias con Vitest: toda regla de negocio y validación tiene pruebas; cobertura mínima del 90 % en dominio y almacenamiento; no se integra código con pruebas fallidas.
+4) Experiencia de usuario consistente: interfaz en español, responsive (móvil y escritorio), accesible (WCAG AA, uso con teclado, estados no comunicados solo por color) y mensajes de error claros.
+5) Simplicidad: SPA sin backend, persistencia en localStorage y dependencias mínimas; cualquier librería nueva debe justificarse.
+6) Integridad de datos: validar toda entrada, no perder información confirmada y manejar con aviso los datos dañados o los fallos al guardar.
+Incluye reglas de gobierno: cada etapa de Spec Kit se documenta en la bitácora y se publica con un commit descriptivo; los cambios a la constitución requieren versión y fecha.
+```
+
+| Archivo | Resultado |
+| --- | --- |
+| `.specify/memory/constitution.md` | Versión 1.0.0 (ratificada 2026-10-29) con 6 principios, restricciones técnicas, flujo de trabajo y reglas de gobierno con versionado semántico. |
+
+**Resultado:** La plantilla se resolvió con `.specify/scripts/powershell/resolve-template.ps1 constitution-template -Json`. No quedan marcadores sin completar y las plantillas de Spec Kit no requirieron cambios. El plan existente ya cumple los seis principios, aunque su sección Constitution Check se redactó cuando la constitución estaba vacía.
 
 ## Paso 1: Specify — Requisitos
 
@@ -87,7 +107,7 @@ El script `.specify/scripts/powershell/setup-plan.ps1 -Json` copió la plantilla
 | `specs/001-gestion-tickets-soporte/contracts/` | `domain-api.md` (interfaces entre capas), `storage-schema.md` (formato JSON y manejo de errores) y `ui-routes.md` (pantallas y comportamiento responsive). |
 | `specs/001-gestion-tickets-soporte/quickstart.md` | Comandos `npm` y 10 escenarios de validación manual y automatizada. |
 
-**Resultado:** Diseño completo sin elementos `NEEDS CLARIFICATION`. El Constitution Check se marcó como PASS sin principios que evaluar, porque la constitución sigue sin definirse. No hubo hooks de extensión registrados.
+**Resultado:** Diseño completo sin elementos `NEEDS CLARIFICATION`. El Constitution Check se marcó como PASS sin principios que evaluar, porque en ese momento la constitución no estaba definida. No hubo hooks de extensión registrados.
 
 ## Paso 3: Tasks — Generación de tareas
 
