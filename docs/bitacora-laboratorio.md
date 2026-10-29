@@ -47,7 +47,24 @@ Antes de Specify, queda pendiente definir los principios del proyecto mediante `
 
 ## Paso 1: Specify — Requisitos
 
-Pendiente. No se ha ejecutado `$speckit-specify`.
+**Ejecución:** 29/10/2026, 10:14 (Lima).
+**Prompt ejecutado:**
+
+```text
+$speckit-specify Desarrolla una aplicación web para gestionar tickets de soporte técnico. Su objetivo es organizar y dar
+seguimiento a las incidencias informáticas. Los usuarios podrán registrar tickets con título, descripción, categoría y
+prioridad; consultar, editar, eliminar, buscar y filtrar tickets; cambiar su estado entre pendiente, en proceso y resuelto; y
+visualizar estadísticas. La información debe conservarse al cerrar y volver a abrir la aplicación. Incluye validaciones y
+criterios de aceptación.
+```
+
+| Archivo | Resultado |
+| --- | --- |
+| `specs/001-gestion-tickets-soporte/spec.md` | Especificación con 5 historias de usuario priorizadas (registro y consulta, estados, edición y eliminación, búsqueda y filtros, estadísticas), 27 requisitos funcionales, casos límite, entidades y 8 criterios de éxito medibles. |
+| `specs/001-gestion-tickets-soporte/checklists/requirements.md` | Lista de calidad de la especificación: 16/16 ítems aprobados en la primera iteración. |
+| `.specify/feature.json` | Ruta de la funcionalidad activa para `$speckit-plan` y las etapas siguientes (estado local, excluido de Git). |
+
+**Resultado:** Especificación lista para planificar, sin marcadores `[NEEDS CLARIFICATION]`. Las decisiones no indicadas en el prompt (categorías Hardware, Software, Red, Cuentas y accesos, Otro; prioridades Baja a Crítica; límites de 5–100 caracteres para el título y 10–1000 para la descripción; uso sin cuentas de usuario; persistencia local) se registraron como supuestos. No hubo hooks de extensión registrados. La constitución sigue sin definirse.
 
 ## Paso 2: Plan — Diseño técnico
 
