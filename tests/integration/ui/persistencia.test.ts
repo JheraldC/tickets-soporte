@@ -1,14 +1,29 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createLocalStorageRepository } from '../../../src/storage/localStorageRepository';
 import { createTicketService } from '../../../src/domain/ticketService';
 import { STORAGE_KEY } from '../../../src/domain/constants';
 import { mountForTest, setField, submitForm } from '../../ui-test-utils';
+
+class BackupFailureStorage implements Storage {
+  private values = new Map<string, string>();
+  get length(): number { return this.values.size; }
+  clear(): void { this.values.clear(); }
+  getItem(key: string): string | null { return this.values.get(key) ?? null; }
+  key(index: number): string | null { return [...this.values.keys()][index] ?? null; }
+  removeItem(key: string): void { this.values.delete(key); }
+  setItem(key: string, value: string): void {
+    if (key.startsWith(`${STORAGE_KEY}:backup-`)) throw new DOMException('full', 'QuotaExceededError');
+    this.values.set(key, String(value));
+  }
+}
 
 beforeEach(() => {
   window.localStorage.clear();
   document.body.replaceChildren();
   window.location.hash = '#/tickets';
 });
+
+afterEach(() => vi.restoreAllMocks());
 
 describe('persistencia local', () => {
   it('restaura tickets al desmontar y volver a montar sobre el mismo Storage', () => {
@@ -63,6 +78,27 @@ describe('persistencia local', () => {
     submitForm(root);
     expect(service.list()).toHaveLength(0);
     expect(root.querySelector('[role="alert"]')?.textContent).toContain('No se pudo guardar');
+    unmount();
+  });
+
+  it('no sobrescribe los datos dañados si falla el respaldo y luego se intenta crear', () => {
+    const original = '{roto';
+    const storage = new BackupFailureStorage();
+    storage.setItem(STORAGE_KEY, original);
+    const service = createTicketService({ repository: createLocalStorageRepository(storage) });
+    const { root, unmount } = mountForTest(service);
+    expect(root.querySelector('[role="alert"]')?.textContent).toContain('no se pudo crear');
+    root.querySelector<HTMLAnchorElement>('.page-heading a[href="#/tickets/nuevo"]')?.click();
+    setField('titulo', 'Ticket sin respaldo', root);
+    setField('descripcion', 'La copia no pudo escribirse.', root);
+    setField('categoria', 'otro', root);
+    setField('prioridad', 'baja', root);
+    submitForm(root);
+
+    expect(service.list()).toHaveLength(0);
+    expect(storage.getItem(STORAGE_KEY)).toBe(original);
+    expect([...Array(storage.length)].some((_, index) => storage.key(index)?.startsWith(`${STORAGE_KEY}:backup-`))).toBe(false);
+    expect(root.querySelector('[role="alert"]')?.textContent).toContain('No se guardó');
     unmount();
   });
 });

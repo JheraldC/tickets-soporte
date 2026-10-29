@@ -73,11 +73,61 @@ describe('createLocalStorageRepository', () => {
     });
   });
 
-  it('respalda de forma defensiva cuando guardar la copia también falla', () => {
+  it('preserva los datos originales y bloquea escrituras si falla el respaldo', () => {
     const storage = new TestStorage();
     storage.setItem(STORAGE_KEY, '{roto');
-    vi.spyOn(storage, 'setItem').mockImplementationOnce(() => { throw new Error('blocked backup'); });
-    expect(createLocalStorageRepository(storage).load().warning).toMatchObject({ kind: 'corrupted' });
+    const originalSetItem = storage.setItem.bind(storage);
+    vi.spyOn(storage, 'setItem').mockImplementation((key, value) => {
+      if (key.startsWith(`${STORAGE_KEY}:backup-`)) throw new Error('blocked backup');
+      originalSetItem(key, value);
+    });
+    const repository = createLocalStorageRepository(storage);
+    const loaded = repository.load();
+
+    expect(loaded.warning).toMatchObject({
+      kind: 'corrupted',
+      message: expect.stringContaining('no se pudo crear'),
+    });
+    expect(storage.getItem(STORAGE_KEY)).toBe('{roto');
+    expect(() => repository.saveAll([makeTicket()])).toThrowError(
+      expect.objectContaining({ kind: 'write-failed', message: expect.stringContaining('No se guardó') }),
+    );
+    expect(storage.getItem(STORAGE_KEY)).toBe('{roto');
+    expect(storage.length).toBe(1);
+  });
+
+  it('también conserva datos parcialmente inválidos si falla el respaldo', () => {
+    const storage = new TestStorage();
+    const original = JSON.stringify({ version: 1, tickets: [makeTicket(), { titulo: 'roto' }] });
+    storage.setItem(STORAGE_KEY, original);
+    const originalSetItem = storage.setItem.bind(storage);
+    vi.spyOn(storage, 'setItem').mockImplementation((key, value) => {
+      if (key.startsWith(`${STORAGE_KEY}:backup-`)) throw new Error('blocked backup');
+      originalSetItem(key, value);
+    });
+    const repository = createLocalStorageRepository(storage);
+    const loaded = repository.load();
+
+    expect(loaded.tickets).toEqual([makeTicket()]);
+    expect(loaded.warning).toMatchObject({ kind: 'partial', message: expect.stringContaining('no se pudo crear') });
+    expect(() => repository.saveAll([makeTicket()])).toThrowError(expect.objectContaining({ kind: 'write-failed' }));
+    expect(storage.getItem(STORAGE_KEY)).toBe(original);
+  });
+
+  it('reintenta el respaldo antes de guardar y permite continuar si el reintento funciona', () => {
+    const storage = new TestStorage();
+    storage.setItem(STORAGE_KEY, '{roto');
+    const originalSetItem = storage.setItem.bind(storage);
+    vi.spyOn(storage, 'setItem').mockImplementationOnce(() => { throw new Error('temporary backup failure'); })
+      .mockImplementation((key, value) => originalSetItem(key, value));
+    const repository = createLocalStorageRepository(storage);
+    expect(repository.load().warning?.message).toContain('no se pudo crear');
+
+    repository.saveAll([makeTicket()]);
+
+    const backupKey = [...Array(storage.length)].map((_, index) => storage.key(index)!).find((key) => key.startsWith(`${STORAGE_KEY}:backup-`));
+    expect(storage.getItem(backupKey!)).toBe('{roto');
+    expect(JSON.parse(storage.getItem(STORAGE_KEY)!)).toEqual({ version: 1, tickets: [makeTicket()] });
   });
 
   it('expone StorageError como error tipado', () => {

@@ -5,6 +5,7 @@ import { isValidTicket } from '../domain/validation';
 
 export function createLocalStorageRepository(storage?: Storage, key = STORAGE_KEY): TicketRepository {
   let providedStorage = storage;
+  let pendingBackup: string | undefined;
 
   function resolveStorage(): Storage {
     try {
@@ -17,17 +18,22 @@ export function createLocalStorageRepository(storage?: Storage, key = STORAGE_KE
     }
   }
 
-  function backup(raw: string, backend: Storage): void {
+  function backup(raw: string, backend: Storage): boolean {
     try {
       backend.setItem(`${key}:backup-${new Date().toISOString()}`, raw);
+      return true;
     } catch {
-      // The read warning remains useful even when the backup cannot be written.
+      return false;
     }
   }
 
   function corrupt(raw: string, backend: Storage): { tickets: Ticket[]; warning: StorageError } {
-    backup(raw, backend);
-    return { tickets: [], warning: new StorageError('corrupted') };
+    const backedUp = backup(raw, backend);
+    pendingBackup = backedUp ? undefined : raw;
+    const warning = backedUp
+      ? new StorageError('corrupted')
+      : new StorageError('corrupted', 'No se pudieron leer los tickets y no se pudo crear el respaldo; el valor original se conserva. Libera espacio para guardar cambios.');
+    return { tickets: [], warning };
   }
 
   return {
@@ -56,10 +62,16 @@ export function createLocalStorageRepository(storage?: Storage, key = STORAGE_KE
       const tickets = record.tickets.filter(isValidTicket);
       const discarded = record.tickets.length - tickets.length;
       if (discarded > 0) {
-        backup(raw, backend);
+        const backedUp = backup(raw, backend);
+        pendingBackup = backedUp ? undefined : raw;
         return {
           tickets,
-          warning: new StorageError('partial', `Se descartaron ${discarded} ticket(s) inválido(s); el resto sigue disponible.`),
+          warning: new StorageError(
+            'partial',
+            backedUp
+              ? `Se descartaron ${discarded} ticket(s) inválido(s); el resto sigue disponible.`
+              : `Se descartaron ${discarded} ticket(s) inválido(s), no se pudo crear el respaldo y el valor original se conserva. Libera espacio para guardar cambios.`,
+          ),
         };
       }
       return { tickets };
@@ -67,8 +79,16 @@ export function createLocalStorageRepository(storage?: Storage, key = STORAGE_KE
 
     saveAll(tickets) {
       try {
-        resolveStorage().setItem(key, JSON.stringify({ version: 1, tickets }));
-      } catch {
+        const backend = resolveStorage();
+        if (pendingBackup !== undefined) {
+          if (!backup(pendingBackup, backend)) {
+            throw new StorageError('write-failed', 'No se guardó el cambio porque no se pudo respaldar el contenido original; los datos dañados se conservaron. Libera espacio e inténtalo de nuevo.');
+          }
+          pendingBackup = undefined;
+        }
+        backend.setItem(key, JSON.stringify({ version: 1, tickets }));
+      } catch (error) {
+        if (error instanceof StorageError && error.kind === 'write-failed') throw error;
         throw new StorageError('write-failed');
       }
     },

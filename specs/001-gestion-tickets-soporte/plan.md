@@ -32,16 +32,18 @@ Aplicación web de una sola página (SPA) para registrar, consultar, editar, eli
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*Revisión posterior a la ratificación de `.specify/memory/constitution.md` v1.0.0 (29/10/2026).*
 
-`.specify/memory/constitution.md` sigue siendo la plantilla sin completar: no define principios, restricciones ni reglas de gobierno. Por lo tanto no hay puertas que evaluar ni violaciones que justificar.
-
-| Momento | Resultado | Observación |
+| Principio | Resultado | Evidencia en la implementación |
 | --- | --- | --- |
-| Antes de Phase 0 | PASS (sin principios definidos) | No hay reglas que puedan bloquear el plan. |
-| Después de Phase 1 | PASS (sin principios definidos) | El diseño respeta igualmente las prácticas que suelen exigir las constituciones: separación por capas, pruebas automatizadas y simplicidad (sin dependencias de UI). |
+| I. Separación por capas | PASS | `src/domain` no importa UI ni almacenamiento ni accede a APIs del navegador; `src/storage` depende del dominio; `src/main.ts` compone las capas. |
+| II. Calidad TypeScript | PASS | `strict` compila sin errores ni supresiones; no hay `any` ni `console.log` en `src/`. El proyecto declara `engines.node >=22`. |
+| III. Pruebas obligatorias | PASS | 73 pruebas pasan; cobertura de líneas: dominio 100 % y almacenamiento 93,81 %. `npm run build` pasa. |
+| IV. Experiencia de usuario | PASS | Textos en español; T068–T069 verificaron responsive, controles táctiles, teclado, foco, títulos de ruta y contraste AA claro/oscuro. |
+| V. Simplicidad | PASS | SPA estática Vite, sin backend, framework CSS ni dependencias de ejecución; persistencia local versionada. |
+| VI. Integridad de datos | PASS | Entradas se validan en dominio; los errores de guardado revierten; el contenido dañado se respalda antes de reemplazarlo. Si el respaldo falla, se conserva el original, se informa y se impide sobrescribirlo hasta que el respaldo pueda completarse; hay pruebas unitarias y de integración. |
 
-Recomendación: ejecutar `$speckit-constitution` y luego volver a comprobar este plan (o `$speckit-analyze`) antes de `$speckit-implement`.
+**Límite de validación del entorno:** esta ejecución usó Node.js 24.19.0. No hay un ejecutable Node.js 22 LTS disponible en la sesión para repetir la validación sobre la versión indicada en las restricciones técnicas; `engines.node` admite `>=22`.
 
 ## Project Structure
 
@@ -129,4 +131,4 @@ tests/
 
 ## Complexity Tracking
 
-No aplica: la constitución no define principios y el diseño no introduce complejidad que requiera justificación.
+No se añaden dependencias de ejecución, capas ni excepciones a los principios MUST. El respaldo pendiente y su reintento se resuelven dentro del repositorio local existente; ante otro fallo, la mutación se rechaza y el contenido original permanece intacto.
