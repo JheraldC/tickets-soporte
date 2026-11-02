@@ -7,6 +7,7 @@ import { createTicketService } from './domain/ticketService';
 import { createLocalStorageRepository } from './storage/localStorageRepository';
 import { createMemoryRepository } from './storage/memoryRepository';
 import { mountApp } from './ui/app';
+import { seedDemoTickets } from './data/demoTickets';
 
 const root = document.getElementById('app');
 if (!root) throw new Error('No se encontró el contenedor principal de la aplicación.');
@@ -18,6 +19,7 @@ try {
   storage.setItem(probeKey, '1');
   storage.removeItem(probeKey);
   repository = createLocalStorageRepository(storage);
+  if (import.meta.env.DEV) seedDemoTickets(storage);
 } catch {
   const memoryRepository = createMemoryRepository();
   repository = {

@@ -28,3 +28,11 @@ npm run preview    # vista previa de dist/
 - `tests/unit/`: pruebas del dominio y almacenamiento.
 - `tests/integration/ui/`: pruebas de integración de las vistas con jsdom.
 - `specs/001-gestion-tickets-soporte/`: especificación, diseño, contratos, quickstart y tareas de la funcionalidad.
+
+## Datos de prueba
+
+Al ejecutar `npm run dev`, la primera apertura en un navegador sin datos guardados carga 20 tickets ficticios: 8 pendientes, 6 en proceso y 6 resueltos. Incluyen las cinco categorías y las cuatro prioridades, con fechas de los veinte días anteriores a la carga.
+
+Los tickets se guardan en `localStorage` y se pueden buscar, filtrar, editar, resolver y eliminar como cualquier otro registro. Las recargas conservan los cambios y no duplican los ejemplos. Si ya existe la clave `tickets-soporte:v1`, se conserva su contenido, incluso cuando la lista está vacía.
+
+La carga automática solo se ejecuta en desarrollo; `npm run build` y `npm run preview` mantienen el inicio habitual sin generar ejemplos. Para probar desde cero sin alterar tus datos, usa un perfil de navegador distinto y abre la dirección que indique Vite. Los datos pertenecen a ese navegador y dirección.
